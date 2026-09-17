@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Smart — Transition Metals &amp; Platinum Anticancer Chemistry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0A1412;
+    --panel:#0F1D1A;
+    --panel2:#152922;
+    --panel3:#1B322A;
+    --line: rgba(201,214,210,0.14);
+    --line-strong: rgba(201,214,210,0.28);
+    --txt:#E7EEEC;
+    --txt-dim:#8FA39E;
+    --txt-dimmer:#5F726D;
+    --amber:#E8A33D;
+    --coral:#E2604B;
+    --cyan:#49C5C0;
+    --silver:#C9D6D2;
+    --radius:4px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(73,197,192,0.08), transparent),
+      radial-gradient(ellipse 900px 500px at 100% 0%, rgba(232,163,61,0.06), transparent),
+      var(--ink);
+    color:var(--txt);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4,.disp{ font-family:'Space Grotesk', sans-serif; letter-spacing:-0.01em; }
+  a{color:var(--cyan);}
+  ::selection{ background:var(--amber); color:#1a1006; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:52px 6vw 34px;
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero-watermark{
+    position:absolute; right:2vw; top:50%; transform:translateY(-50%);
+    font-family:'Space Grotesk', sans-serif; font-weight:700;
+    font-size:min(26vw,260px); color:transparent;
+    -webkit-text-stroke:1px rgba(201,214,210,0.07);
+    pointer-events:none; user-select:none; line-height:1;
+  }
+  .hero-tile{
+    display:inline-flex; align-items:flex-start; gap:14px;
+    border:1px solid var(--line-strong);
+    background:linear-gradient(180deg, var(--panel2), var(--panel));
+    border-radius:var(--radius);
+    padding:14px 18px;
+    margin-bottom:22px;
+  }
+  .hero-tile .num{ font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--txt-dimmer); padding-top:2px;}
+  .hero-tile .sym{ font-size:30px; font-weight:700; color:var(--amber); line-height:1;}
+  .hero-tile .meta{ display:flex; flex-direction:column; }
+  .hero-tile .meta .name{ font-size:12px; color:var(--txt-dim); }
+  .hero-tile .meta .mass{ font-size:11px; color:var(--txt-dimmer); font-family:'IBM Plex Mono',monospace;}
+  h1.title{
+    font-size:clamp(32px, 5vw, 54px);
+    font-weight:700; margin:0 0 10px; color:var(--txt);
+    max-width:16ch;
+  }
+  h1.title em{ font-style:normal; color:var(--cyan); }
+  .subtitle{ font-size:16px; color:var(--txt-dim); max-width:56ch; margin:0; }
+
+  /* ---------- NAV ---------- */
+  .nav-wrap{
+    position:sticky; top:0; z-index:50;
+    background:rgba(10,20,18,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; gap:10px; padding:12px 6vw; overflow-x:auto;
+  }
+  .nav-tile{
+    flex:0 0 auto;
+    display:flex; flex-direction:column; align-items:flex-start;
+    min-width:108px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    border-radius:var(--radius);
+    padding:8px 10px;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, transform .15s ease;
+  }
+  .nav-tile .n{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--txt-dimmer);}
+  .nav-tile .s{ font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:20px; margin-top:2px;}
+  .nav-tile .l{ font-size:11px; color:var(--txt-dim); margin-top:1px;}
+  .nav-tile:hover{ border-color:var(--line-strong); transform:translateY(-1px); }
+  .nav-tile.active{ border-color:var(--cyan); background:var(--panel2); }
+  .nav-tile.active .s{ color:var(--cyan); }
+
+  /* ---------- LAYOUT ---------- */
+  main{ padding:38px 6vw 90px; max-width:1180px; margin:0 auto; }
+  .view{ display:none; animation:fade .25s ease; }
+  .view.active{ display:block; }
+  @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} }
+
+  .section-head{ margin-bottom:26px; }
+  .section-head .eyebrow{ color:var(--txt-dimmer); font-size:13px; margin:0 0 6px; font-family:'IBM Plex Mono',monospace; }
+  .section-head h2{ font-size:clamp(24px,3vw,32px); margin:0 0 8px; }
+  .section-head p{ color:var(--txt-dim); margin:0; max-width:62ch; font-size:15px;}
+
+  /* ---------- OVERVIEW ---------- */
+  .card-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+  .fact-card{
+    border:1px solid var(--line); background:var(--panel);
+    border-radius:var(--radius); padding:18px 20px;
+  }
+  .fact-card h3{ font-size:15px; margin:0 0 10px; color:var(--amber); display:flex; align-items:center; gap:8px;}
+  .fact-card h3 .tag{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--txt-dimmer); border:1px solid var(--line); padding:1px 6px; border-radius:3px;}
+  .fact-card ul{ margin:0; padding-left:18px; font-size:14px; color:var(--silver);}
+  .fact-card li{ margin-bottom:6px; }
+  .fact-card li:last-child{ margin-bottom:0; }
+  .fact-card .formula{ font-family:'IBM Plex Mono',monospace; color:var(--cyan); }
+
+  /* ---------- DIAGRAM WIDGETS (shared) ---------- */
+  .diagram-block{
+    border:1px solid var(--line); background:var(--panel);
+    border-radius:var(--radius); padding:22px; margin-bottom:22px;
+  }
+  .diagram-block h3{ font-size:16px; margin:0 0 4px; }
+  .diagram-block .hint{ font-size:12.5px; color:var(--txt-dimmer); margin:0 0 16px; }
+  .chip-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .chip{
+    border:1px solid var(--line); background:var(--panel2); color:var(--silver);
+    font-size:13px; padding:7px 13px; border-radius:20px; cursor:pointer;
+    transition:all .15s ease; font-family:'IBM Plex Sans',sans-serif;
+  }
+  .chip:hover{ border-color:var(--line-strong); }
+  .chip.active{ background:var(--cyan); color:#052422; border-color:var(--cyan); font-weight:600; }
+  .info-panel{
+    border:1px dashed var(--line-strong); border-radius:var(--radius);
+    background:var(--panel2); padding:16px 18px; font-size:14px; color:var(--silver);
+    min-height:52px;
+  }
+  .info-panel b{ color:var(--amber); }
+  .info-panel .formula{ font-family:'IBM Plex Mono',monospace; color:var(--cyan); }
+
+  /* periodic block explorer */
+  .pblock-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-bottom:16px; max-width:520px;}
+  .pblock{
+    border-radius:var(--radius); padding:14px 8px; text-align:center; cursor:pointer;
+    border:1px solid transparent; font-weight:600; font-family:'Space Grotesk',sans-serif; font-size:15px;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .pblock:hover{ transform:translateY(-2px); }
+  .pblock.active{ border-color:var(--txt); }
+  .pblock.s{ background:#2f5a3e; color:#c9f0d6;}
+  .pblock.p{ background:#6a4a1f; color:#ffe3b0;}
+  .pblock.d{ background:#1f5b63; color:#c7f4f5;}
+  .pblock.f{ background:#6a2a4a; color:#ffc7e3;}
+
+  /* stepper */
+  .stepper{ display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin-bottom:16px; }
+  .step-box{
+    border:1px solid var(--line); background:var(--panel2); border-radius:var(--radius);
+    padding:12px 14px; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:13px;
+    color:var(--silver); transition:border-color .15s ease, background .15s ease; text-align:center;
+  }
+  .step-box.active{ border-color:var(--amber); background:#2a2010; color:var(--amber); }
+  .step-arrow{ color:var(--txt-dimmer); font-size:18px; }
+
+  /* cell diagram */
+  .cell-diagram{ display:grid; grid-template-columns:1fr; gap:10px; margin-bottom:16px; }
+  .cell-zone{
+    border:1px solid var(--line); border-radius:var(--radius); padding:14px 16px; cursor:pointer;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .cell-zone:hover{ border-color:var(--line-strong); }
+  .cell-zone.active{ border-color:var(--coral); background:var(--panel2); }
+  .cell-zone .zt{ font-weight:600; font-size:14px; }
+  .cell-zone .zc{ font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--txt-dimmer); }
+  @media(min-width:640px){ .cell-diagram{ grid-template-columns:1fr 1fr 1fr; } }
+
+  /* DNA binding bars */
+  .bind-row{ display:flex; align-items:center; gap:12px; margin-bottom:10px; cursor:pointer; }
+  .bind-label{ width:150px; flex:0 0 150px; font-size:13px; color:var(--silver); }
+  .bind-track{ flex:1; height:14px; background:var(--panel2); border-radius:8px; overflow:hidden; border:1px solid var(--line); }
+  .bind-fill{ height:100%; background:linear-gradient(90deg, var(--cyan), var(--coral)); border-radius:8px; transition:width .3s ease;}
+  .bind-tag{ font-size:11px; font-family:'IBM Plex Mono',monospace; color:var(--txt-dimmer); width:64px; text-align:right;}
+
+  /* comparison matrix */
+  .matrix-wrap{ overflow-x:auto; }
+  table.matrix{ width:100%; border-collapse:collapse; min-width:560px; font-size:13.5px;}
+  table.matrix th, table.matrix td{ border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  table.matrix th{ background:var(--panel2); color:var(--amber); font-weight:600; position:sticky; top:0;}
+  table.matrix td.rowhead{ color:var(--cyan); font-weight:600; white-space:nowrap; background:var(--panel2);}
+  table.matrix tr.highlight td{ background:#182f28; }
+
+  /* resistance web */
+  .web{ display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; margin-bottom:14px; }
+  .web-node{
+    border:1px solid var(--line); background:var(--panel2); border-radius:var(--radius);
+    padding:12px; text-align:center; font-size:13px; cursor:pointer; color:var(--silver);
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .web-node:hover{ transform:translateY(-2px); border-color:var(--coral); }
+  .web-node.active{ border-color:var(--coral); color:var(--coral); background:#241412; }
+
+  /* flip cards, shared by diagrams gallery + flashcards */
+  .flip-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px; }
+  .flip-card{ perspective:1200px; height:158px; cursor:pointer; }
+  .flip-inner{ position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.4,.2,.2,1); transform-style:preserve-3d; }
+  .flip-card.flipped .flip-inner{ transform:rotateY(180deg); }
+  .flip-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--radius);
+    border:1px solid var(--line); padding:16px; display:flex; flex-direction:column; justify-content:center;
+    background:var(--panel2);
+  }
+  .flip-face.front{ }
+  .flip-face.back{ transform:rotateY(180deg); background:#132420; }
+  .flip-face .k{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--txt-dimmer); margin-bottom:8px;}
+  .flip-face .q{ font-size:14px; color:var(--txt); font-weight:500; }
+  .flip-face .a{ font-size:13.5px; color:var(--silver); }
+
+  /* ---------- MINI MAP ---------- */
+  .map-layout{ display:grid; grid-template-columns:1fr; gap:18px; }
+  @media(min-width:800px){ .map-layout{ grid-template-columns:320px 1fr; align-items:start; } }
+  .map-tree{ display:flex; flex-direction:column; gap:6px; position:relative; padding-left:14px; }
+  .map-tree::before{ content:""; position:absolute; left:0; top:8px; bottom:8px; width:1px; background:var(--line-strong); }
+  .map-node{
+    position:relative; text-align:left; background:none; border:none; color:var(--silver);
+    font-family:'IBM Plex Sans',sans-serif; font-size:14.5px; padding:9px 10px 9px 16px; cursor:pointer;
+    border-radius:var(--radius); transition:background .15s ease, color .15s ease;
+  }
+  .map-node::before{
+    content:""; position:absolute; left:-14px; top:50%; width:12px; height:1px; background:var(--line-strong);
+  }
+  .map-node:hover{ background:var(--panel2); color:var(--txt); }
+  .map-node.active{ background:var(--panel3); color:var(--cyan); font-weight:600; }
+  .map-node .mnum{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--txt-dimmer); margin-right:8px; }
+  .map-pane{
+    border:1px solid var(--line-strong); background:var(--panel); border-radius:var(--radius);
+    padding:26px 28px; min-height:340px;
+  }
+  .map-pane .placeholder{ color:var(--txt-dimmer); font-size:14px; }
+  .map-pane h3{ margin:0 0 4px; font-size:19px; color:var(--amber); }
+  .map-pane .subhead{ font-size:12px; color:var(--txt-dimmer); font-family:'IBM Plex Mono',monospace; margin-bottom:16px;}
+  .map-pane p{ font-size:14.5px; color:var(--silver); margin:0 0 12px; }
+  .map-pane ul{ margin:0 0 12px; padding-left:20px; font-size:14.5px; color:var(--silver);}
+  .map-pane li{ margin-bottom:6px; }
+
+  /* ---------- FLASHCARDS ---------- */
+  .fc-controls{ display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:18px;}
+  .btn{
+    border:1px solid var(--line-strong); background:var(--panel2); color:var(--txt);
+    font-size:13px; padding:9px 16px; border-radius:var(--radius); cursor:pointer;
+    font-family:'IBM Plex Sans',sans-serif; transition:border-color .15s ease, background .15s ease;
+  }
+  .btn:hover{ border-color:var(--cyan); }
+  .btn.primary{ background:var(--cyan); color:#052422; border-color:var(--cyan); font-weight:600; }
+  .fc-count{ font-size:13px; color:var(--txt-dimmer); font-family:'IBM Plex Mono',monospace;}
+  .fc-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; }
+  .fc-card{ perspective:1200px; height:180px; cursor:pointer; }
+  .fc-inner{ position:relative; width:100%; height:100%; transition:transform .45s cubic-bezier(.4,.2,.2,1); transform-style:preserve-3d;}
+  .fc-card.flipped .fc-inner{ transform:rotateY(180deg); }
+  .fc-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:var(--radius);
+    border:1px solid var(--line); padding:16px 18px; overflow-y:auto;
+  }
+  .fc-face.front{ background:var(--panel2); display:flex; flex-direction:column;}
+  .fc-face.back{ background:#132420; transform:rotateY(180deg); display:flex; flex-direction:column;}
+  .fc-idx{ font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--txt-dimmer); margin-bottom:10px; display:flex; justify-content:space-between;}
+  .fc-face .txt-body{ font-size:14px; color:var(--txt); flex:1; }
+  .fc-face.back .txt-body{ color:var(--silver); font-size:13.5px; }
+  .fc-flip-note{ font-size:10.5px; color:var(--txt-dimmer); margin-top:8px; font-family:'IBM Plex Mono',monospace; }
+
+  /* ---------- QUIZ ---------- */
+  .quiz-score{
+    display:flex; align-items:center; gap:16px; border:1px solid var(--line-strong);
+    background:var(--panel2); border-radius:var(--radius); padding:14px 18px; margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+  .quiz-score .big{ font-family:'Space Grotesk',sans-serif; font-size:26px; font-weight:700; color:var(--cyan);}
+  .quiz-score .lbl{ font-size:12px; color:var(--txt-dimmer); }
+  .q-item{
+    border:1px solid var(--line); background:var(--panel); border-radius:var(--radius);
+    padding:18px 20px; margin-bottom:14px;
+  }
+  .q-item .qn{ font-size:11px; color:var(--txt-dimmer); font-family:'IBM Plex Mono',monospace; margin-bottom:6px;}
+  .q-item .qtext{ font-size:15px; margin-bottom:14px; color:var(--txt); }
+  .q-opts{ display:grid; gap:8px; }
+  .q-opt{
+    text-align:left; border:1px solid var(--line); background:var(--panel2); color:var(--silver);
+    padding:10px 14px; border-radius:var(--radius); font-size:13.5px; cursor:pointer;
+    font-family:'IBM Plex Sans',sans-serif; transition:border-color .15s ease, background .15s ease;
+  }
+  .q-opt:hover{ border-color:var(--line-strong); }
+  .q-opt.correct{ border-color:var(--cyan); background:#0e2a26; color:var(--cyan); }
+  .q-opt.wrong{ border-color:var(--coral); background:#2a1512; color:var(--coral); }
+  .q-opt[disabled]{ cursor:default; }
+
+  footer{
+    border-top:1px solid var(--line); padding:26px 6vw; margin-top:20px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    color:var(--txt-dimmer); font-size:12.5px;
+  }
+
+  @media(max-width:640px){
+    .nav-tile{ min-width:88px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-watermark">Pt</div>
+  <div class="hero-tile">
+    <span class="num">78</span>
+    <span class="sym">Pt</span>
+    <span class="meta"><span class="name">Platinum</span><span class="mass">195.08</span></span>
+  </div>
+  <h1 class="title">Study <em>Smart</em></h1>
+  <p class="subtitle">A quick-reference study kit on d-block transition metals and platinum-based anticancer chemistry — built to review, not to re-read a lecture.</p>
+</header>
+
+<div class="nav-wrap">
+  <nav class="nav" id="nav">
+    <div class="nav-tile active" data-view="overview"><span class="n">1</span><span class="s">Ov</span><span class="l">Overview</span></div>
+    <div class="nav-tile" data-view="diagrams"><span class="n">2</span><span class="s">Dg</span><span class="l">Diagrams</span></div>
+    <div class="nav-tile" data-view="minimap"><span class="n">3</span><span class="s">Mm</span><span class="l">Mini Map</span></div>
+    <div class="nav-tile" data-view="flashcards"><span class="n">4</span><span class="s">Fc</span><span class="l">Flash Cards</span></div>
+    <div class="nav-tile" data-view="quiz"><span class="n">5</span><span class="s">Qz</span><span class="l">Quiz Bank</span></div>
+  </nav>
+</div>
+
+<main>
+
+  <!-- ============ 1. OVERVIEW ============ -->
+  <section class="view active" id="view-overview">
+    <div class="section-head">
+      <p class="eyebrow">01 / Overview</p>
+      <h2>The essentials, condensed</h2>
+      <p>Every rule, number, and definition you actually need — no lecture-style padding.</p>
+    </div>
+    <div class="card-grid">
+      <div class="fact-card">
+        <h3><span class="tag">Definition</span> d-Block metals</h3>
+        <ul>
+          <li>Elements in groups <b style="color:var(--cyan)">3–12</b> of the periodic table.</li>
+          <li>Also called <b style="color:var(--cyan)">transition metals</b>.</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">IUPAC</span> Transition metal rule</h3>
+        <ul>
+          <li>An element with an <b>incomplete d subshell</b>, or one that forms a cation with an incomplete d subshell.</li>
+          <li>Zn, Cd, Hg (group 12) are excluded — their d subshell is always full.</li>
+          <li>"Heavier d-block metals" = 2nd &amp; 3rd row (4d, 5d series).</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">Group 10</span> Family at a glance</h3>
+        <ul>
+          <li>Nonradioactive: Ni, Pd, Pt. Radioactive: Ds.</li>
+          <li>Pd &amp; Pt resist corrosion — attacked by O₂, F₂, Cl₂ only at very high temperature.</li>
+          <li>Pd dissolves in hot oxidizing acids.</li>
+          <li>Pt dissolves <b>only</b> in aqua regia (1:3 HNO₃:HCl).</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">Config</span> Electron configurations</h3>
+        <ul>
+          <li class="formula">Ni: [Ar] 4s² 3d⁸</li>
+          <li class="formula">Pd: [Kr] 4d¹⁰</li>
+          <li class="formula">Pt: [Xe] 4f¹⁴ 5d⁹ 6s¹</li>
+          <li>Most stable oxidation state for all three: <b>+II</b>.</li>
+          <li>Pt(II) is d⁸ → dominant geometry is <b>square planar</b>.</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">Uses</span> Catalytic roles</h3>
+        <ul>
+          <li>Pd → hydrogenation catalyst; H₂/D₂/T₂ separation &amp; purification; Wacker process (ethylene → acetaldehyde).</li>
+          <li>Pt → oxidation catalyst in HNO₃ production.</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">Drug</span> Cisplatin — core facts</h3>
+        <ul>
+          <li>cis-diamminedichloroplatinum(II) — neutral, inorganic, yellow powder.</li>
+          <li>First synthesized in 1844.</li>
+          <li>2 NH₃ (nonleaving) + 2 Cl (labile, leaving).</li>
+          <li>Binds DNA → cross-linking → apoptosis.</li>
+          <li>Treats: ovarian, testicular, uterine, bladder, head &amp; neck cancers.</li>
+          <li>Made from [PtCl₄]²⁻, stepwise addition of NH₃ (cis-directed).</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">MOA</span> Cisplatin mode of action</h3>
+        <ul>
+          <li>Given IV. Extracellular [Cl⁻] ≈ 100 mM keeps it stable in blood.</li>
+          <li>Intracellular [Cl⁻] = 4 mM triggers hydrolysis inside the cell.</li>
+          <li>Forms electrophilic mono-/diaqua species.</li>
+          <li>Uptake: passive diffusion + active transport (copper &amp; organic cation transporters).</li>
+          <li>Binds DNA mainly at N7-guanine; minor sites: N7/N1-adenine, N3-cytosine.</li>
+          <li>Mitochondrial DNA binding is less important for activity.</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">Risk</span> Resistance &amp; toxicity</h3>
+        <ul>
+          <li>Narrow therapeutic window — dose can't simply be raised.</li>
+          <li>Resistance: ↓ drug entry, ↑ efflux, ↑ DNA repair, removal of Pt complex.</li>
+          <li>Toxicity: nephrotoxicity, ototoxicity, peripheral neuropathy.</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">2nd gen</span> Carboplatin</h3>
+        <ul>
+          <li>cis-diamine(1,1-cyclobutanedicarboxylato)Pt(II) — Paraplatin®, FDA 1989.</li>
+          <li>Cl ligands replaced by a bidentate chelate (cbdca).</li>
+          <li>Less nephro/ototoxic (lower reactivity) but more myelosuppressive.</li>
+          <li>Dose 3–6× cisplatin; can be given outpatient.</li>
+          <li>Prodrug — chelate ring-opens after hydrolysis to react with DNA.</li>
+          <li>Uses: head &amp; neck, ovarian, small-cell lung, testicular cancer.</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">3rd gen</span> Oxaliplatin</h3>
+        <ul>
+          <li>cis-[oxalato]trans-1,2-diaminocyclohexane Pt(II) — Eloxatin®.</li>
+          <li>DACH ligand (nonleaving) + oxalato (leaving group).</li>
+          <li>Bulky DACH hydrolysis product blocks mismatch repair → excellent vs. colon/rectal cancer.</li>
+          <li>Combined with 5-FU/leucovorin for metastatic colorectal cancer.</li>
+          <li>Dose-limiting toxicity: nerve damage, possibly irreversible.</li>
+          <li>IV infusion over 2–6 h.</li>
+        </ul>
+      </div>
+      <div class="fact-card">
+        <h3><span class="tag">Pipeline</span> Other platinum candidates</h3>
+        <ul>
+          <li>Nedaplatin — cis-diammineglycolato-Pt(II); Japan; head&amp;neck/testicular/ovarian/lung/cervical; dose-limiting myelosuppression.</li>
+          <li>Lobaplatin — NSCLC &amp; breast cancer. Heptaplatin — gastric cancer. Both: myelosuppression + mild hepatotoxicity, not EU/FDA approved.</li>
+          <li>Satraplatin — Pt(IV), oral, hydrophobic, no cross-resistance with cisplatin; phase III (+prednisone) for hormone-refractory prostate cancer, but no FDA fast-track (insufficient survival gain).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. INTERACTIVE DIAGRAMS ============ -->
+  <section class="view" id="view-diagrams">
+    <div class="section-head">
+      <p class="eyebrow">02 / Interactive diagrams</p>
+      <h2>Click through the chemistry</h2>
+      <p>Every diagram below responds to a click — explore blocks, ligands, cell compartments, and drug comparisons directly.</p>
+    </div>
+
+    <!-- Periodic block explorer -->
+    <div class="diagram-block">
+      <h3>Periodic table blocks</h3>
+      <p class="hint">Click a block to see which elements it holds and where transition metals sit.</p>
+      <div class="pblock-grid">
+        <div class="pblock s" data-block="s">s-block</div>
+        <div class="pblock p" data-block="p">p-block</div>
+        <div class="pblock d" data-block="d">d-block</div>
+        <div class="pblock f" data-block="f">f-block</div>
+      </div>
+      <div class="info-panel" id="pblock-info">Click a block above to read its description.</div>
+    </div>
+
+    <!-- Group 10 toggle -->
+    <div class="diagram-block">
+      <h3>Group 10 electron configurations</h3>
+      <p class="hint">Toggle between the three nonradioactive Group 10 metals.</p>
+      <div class="chip-row" id="g10-chips">
+        <div class="chip active" data-el="Ni">Nickel (Ni)</div>
+        <div class="chip" data-el="Pd">Palladium (Pd)</div>
+        <div class="chip" data-el="Pt">Platinum (Pt)</div>
+      </div>
+      <div class="info-panel" id="g10-info"></div>
+    </div>
+
+    <!-- Cisplatin synthesis stepper -->
+    <div class="diagram-block">
+      <h3>Cisplatin synthesis pathway</h3>
+      <p class="hint">Click each stage to follow [PtCl₄]²⁻ through to cisplatin.</p>
+      <div class="stepper" id="synth-stepper">
+        <div class="step-box active" data-step="0">[PtCl₄]²⁻</div>
+        <span class="step-arrow">→</span>
+        <div class="step-box" data-step="1">+NH₃, −Cl⁻</div>
+        <span class="step-arrow">→</span>
+        <div class="step-box" data-step="2">+NH₃, −Cl⁻</div>
+        <span class="step-arrow">→</span>
+        <div class="step-box" data-step="3">Cisplatin</div>
+      </div>
+      <div class="info-panel" id="synth-info"></div>
+    </div>
+
+    <!-- Cell trafficking diagram -->
+    <div class="diagram-block">
+      <h3>Cisplatin's journey into the cell</h3>
+      <p class="hint">Click a compartment to see its chloride concentration and what happens there.</p>
+      <div class="cell-diagram" id="cell-diagram">
+        <div class="cell-zone" data-zone="extra">
+          <div class="zt">Extracellular fluid / blood</div>
+          <div class="zc">[Cl⁻] ≈ 100 mM</div>
+        </div>
+        <div class="cell-zone" data-zone="cyto">
+          <div class="zt">Cytosol</div>
+          <div class="zc">[Cl⁻] = 4 mM</div>
+        </div>
+        <div class="cell-zone" data-zone="nucleus">
+          <div class="zt">Nucleus</div>
+          <div class="zc">DNA target</div>
+        </div>
+      </div>
+      <div class="info-panel" id="cell-info">Click a compartment above.</div>
+    </div>
+
+    <!-- DNA binding preference -->
+    <div class="diagram-block">
+      <h3>Cisplatin's DNA binding sites</h3>
+      <p class="hint">Click a site to see how strongly cisplatin favors it.</p>
+      <div id="bind-rows">
+        <div class="bind-row" data-site="n7g">
+          <div class="bind-label">N7 – Guanine</div>
+          <div class="bind-track"><div class="bind-fill" style="width:95%"></div></div>
+          <div class="bind-tag">primary</div>
+        </div>
+        <div class="bind-row" data-site="n7a">
+          <div class="bind-label">N7 – Adenine</div>
+          <div class="bind-track"><div class="bind-fill" style="width:30%"></div></div>
+          <div class="bind-tag">minor</div>
+        </div>
+        <div class="bind-row" data-site="n1a">
+          <div class="bind-label">N1 – Adenine</div>
+          <div class="bind-track"><div class="bind-fill" style="width:22%"></div></div>
+          <div class="bind-tag">minor</div>
+        </div>
+        <div class="bind-row" data-site="n3c">
+          <div class="bind-label">N3 – Cytosine</div>
+          <div class="bind-track"><div class="bind-fill" style="width:18%"></div></div>
+          <div class="bind-tag">minor</div>
+        </div>
+      </div>
+      <div class="info-panel" id="bind-info">Click a binding site above. (Bars show relative preference, not exact percentages — the source material describes these qualitatively.)</div>
+    </div>
+
+    <!-- Comparison matrix -->
+    <div class="diagram-block">
+      <h3>Cisplatin vs. carboplatin vs. oxaliplatin</h3>
+      <p class="hint">Choose a criterion to spotlight that row.</p>
+      <div class="chip-row" id="matrix-chips">
+        <div class="chip active" data-row="0">Generation</div>
+        <div class="chip" data-row="1">Ligands</div>
+        <div class="chip" data-row="2">Key toxicity</div>
+        <div class="chip" data-row="3">Main indication</div>
+        <div class="chip" data-row="4">Route</div>
+      </div>
+      <div class="matrix-wrap">
+        <table class="matrix" id="matrix-table">
+          <thead><tr><th></th><th>Cisplatin</th><th>Carboplatin</th><th>Oxaliplatin</th></tr></thead>
+          <tbody>
+            <tr data-row="0"><td class="rowhead">Generation</td><td>1st — Eloxatin's predecessor</td><td>2nd — Paraplatin®</td><td>3rd — Eloxatin®</td></tr>
+            <tr data-row="1"><td class="rowhead">Ligands</td><td>2 NH₃ + 2 Cl (leaving)</td><td>2 NH₃ + cbdca chelate (leaving)</td><td>DACH + oxalato (leaving)</td></tr>
+            <tr data-row="2"><td class="rowhead">Key toxicity</td><td>Nephrotoxicity, ototoxicity, neuropathy</td><td>Myelosuppression (more than cisplatin)</td><td>Peripheral neuropathy (dose-limiting)</td></tr>
+            <tr data-row="3"><td class="rowhead">Main indication</td><td>Ovarian, testicular, bladder, head &amp; neck</td><td>Ovarian, lung, head &amp; neck, testicular</td><td>Metastatic colorectal cancer (+5-FU/LV)</td></tr>
+            <tr data-row="4"><td class="rowhead">Route</td><td>IV</td><td>IV, outpatient-friendly</td><td>IV infusion, 2–6 h</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Resistance web -->
+    <div class="diagram-block">
+      <h3>Platinum resistance mechanisms</h3>
+      <p class="hint">Click each mechanism resistant cells use to reduce platinum binding.</p>
+      <div class="web" id="resist-web">
+        <div class="web-node" data-r="entry">Decreased drug entry</div>
+        <div class="web-node" data-r="efflux">Increased drug efflux</div>
+        <div class="web-node" data-r="repair">Enhanced DNA repair</div>
+        <div class="web-node" data-r="removal">Removal of Pt complex</div>
+      </div>
+      <div class="info-panel" id="resist-info">Click a mechanism above.</div>
+    </div>
+
+    <!-- Other drug candidates flip gallery -->
+    <div class="diagram-block">
+      <h3>Other platinum drug candidates</h3>
+      <p class="hint">Click a card to flip it and reveal its use and toxicity profile.</p>
+      <div class="flip-grid" id="other-gallery"></div>
+    </div>
+  </section>
+
+  <!-- ============ 3. MINI MAP ============ -->
+  <section class="view" id="view-minimap">
+    <div class="section-head">
+      <p class="eyebrow">03 / Mini map</p>
+      <h2>Topic map</h2>
+      <p>Click any topic on the left — its full text opens in the reading pane on the right, right here in this section.</p>
+    </div>
+    <div class="map-layout">
+      <div class="map-tree" id="map-tree"></div>
+      <div class="map-pane" id="map-pane">
+        <p class="placeholder">Select a topic from the list to read it here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. FLASH CARDS ============ -->
+  <section class="view" id="view-flashcards">
+    <div class="section-head">
+      <p class="eyebrow">04 / Flash cards</p>
+      <h2>Test your recall</h2>
+      <p>Click a card to flip between the question and the answer.</p>
+    </div>
+    <div class="chip-row" id="fc-level-row">
+      <button class="chip active" data-level="1">Level 1 · Easy</button>
+      <button class="chip" data-level="2">Level 2 · Medium</button>
+      <button class="chip" data-level="3">Level 3 · Hard</button>
+    </div>
+    <div class="fc-controls">
+      <button class="btn primary" id="fc-flip-all">Flip all cards</button>
+      <span class="fc-count" id="fc-count"></span>
+    </div>
+    <div class="fc-grid" id="fc-grid"></div>
+  </section>
+
+  <!-- ============ 5. QUIZ BANK ============ -->
+  <section class="view" id="view-quiz">
+    <div class="section-head">
+      <p class="eyebrow">05 / Quiz bank</p>
+      <h2>Multiple-choice quiz</h2>
+      <p>Answer choices are shuffled randomly. Select an answer to see if you're right — your score updates live.</p>
+    </div>
+    <div class="chip-row" id="quiz-level-row">
+      <button class="chip active" data-level="1">Level 1 · Easy</button>
+      <button class="chip" data-level="2">Level 2 · Medium</button>
+      <button class="chip" data-level="3">Level 3 · Hard</button>
+    </div>
+    <div class="quiz-score">
+      <div><div class="big" id="quiz-score">0 / 0</div><div class="lbl">answered correctly</div></div>
+      <button class="btn" id="quiz-reset">Reshuffle &amp; reset</button>
+    </div>
+    <div id="quiz-list"></div>
+  </section>
+
+</main>
+
+<footer>
+  <span>Study Smart — Transition Metals &amp; Platinum Anticancer Chemistry</span>
+  <span>© Anmar Taha. All rights reserved.</span>
+</footer>
+
+<script>
+/* ============ NAVIGATION ============ */
+const navTiles = document.querySelectorAll('.nav-tile');
+navTiles.forEach(tile=>{
+  tile.addEventListener('click', ()=>{
+    navTiles.forEach(t=>t.classList.remove('active'));
+    tile.classList.add('active');
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+tile.dataset.view).classList.add('active');
+    window.scrollTo({top:0, behavior:'instant'});
+  });
+});
+
+/* ============ DIAGRAM 1: periodic blocks ============ */
+const pblockData = {
+  s: "s-block: groups 1–2 (plus He). Includes the alkali and alkaline-earth metals — outer electrons fill an s subshell.",
+  p: "p-block: groups 13–18. Includes most nonmetals and metalloids — outer electrons fill a p subshell.",
+  d: "d-block: groups 3–12. These are the transition / d-block metals — the entire focus of this deck, including nickel, palladium and platinum in Group 10.",
+  f: "f-block: the lanthanides and actinides, shown below the main table — outer electrons fill an f subshell."
+};
+document.querySelectorAll('.pblock').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.pblock').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('pblock-info').innerHTML = pblockData[b.dataset.block];
+  });
+});
+
+/* ============ DIAGRAM 2: Group 10 configs ============ */
+const g10Data = {
+  Ni: "<b>Nickel (Ni)</b> — configuration <span class='formula'>[Ar] 4s² 3d⁸</span>. Lightest Group 10 metal; the 4s orbital is filled before 3d, following the normal Aufbau order.",
+  Pd: "<b>Palladium (Pd)</b> — configuration <span class='formula'>[Kr] 4d¹⁰</span>. Unusually, the 5s orbital is empty — all valence electrons pack into a full 4d shell.",
+  Pt: "<b>Platinum (Pt)</b> — configuration <span class='formula'>[Xe] 4f¹⁴ 5d⁹ 6s¹</span>. One electron sits in 6s rather than completing 5d — the three metals show striking configuration diversity."
+};
+document.querySelectorAll('#g10-chips .chip').forEach(c=>{
+  c.addEventListener('click', ()=>{
+    document.querySelectorAll('#g10-chips .chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    document.getElementById('g10-info').innerHTML = g10Data[c.dataset.el];
+  });
+});
+document.getElementById('g10-info').innerHTML = g10Data.Ni;
+
+/* ============ DIAGRAM 3: cisplatin synthesis stepper ============ */
+const synthData = [
+  "<b>Step 0 — [PtCl₄]²⁻:</b> the starting material. A square-planar platinum(II) center holds four equivalent chloride ligands.",
+  "<b>Step 1 — first NH₃ substitution:</b> one NH₃ replaces a chloride. Because all four positions in [PtCl₄]²⁻ are equivalent, it doesn't matter which one is substituted first.",
+  "<b>Step 2 — second NH₃ substitution:</b> a second NH₃ replaces another chloride. It is directed <b>cis</b> to the first NH₃ group, not trans.",
+  "<b>Step 3 — cisplatin formed:</b> the product is cis-diamminedichloroplatinum(II) — two NH₃ (nonleaving) and two Cl (leaving, labile) ligands arranged in a cis square-planar geometry."
+];
+document.querySelectorAll('#synth-stepper .step-box').forEach(s=>{
+  s.addEventListener('click', ()=>{
+    document.querySelectorAll('#synth-stepper .step-box').forEach(x=>x.classList.remove('active'));
+    s.classList.add('active');
+    document.getElementById('synth-info').innerHTML = synthData[+s.dataset.step];
+  });
+});
+document.getElementById('synth-info').innerHTML = synthData[0];
+
+/* ============ DIAGRAM 4: cell trafficking ============ */
+const cellData = {
+  extra: "<b>Extracellular fluid / blood ([Cl⁻] ≈ 100 mM):</b> this high chloride concentration keeps cisplatin's Pt–Cl bonds stable, preventing hydrolysis while the drug travels through the bloodstream after IV administration.",
+  cyto: "<b>Cytosol ([Cl⁻] = 4 mM):</b> once inside the cell, the much lower chloride concentration triggers hydrolysis — cisplatin loses its chloride ligands, forming reactive mono- and diaqua electrophilic species. Entry happens via passive diffusion and active transport (copper transporters, organic cation transporters).",
+  nucleus: "<b>Nucleus:</b> the activated, electrophilic platinum species bind nuclear DNA — primarily at N7 of guanine — forming cross-links that trigger apoptosis. Mitochondrial DNA interaction is believed to be less important for this activity."
+};
+document.querySelectorAll('.cell-zone').forEach(z=>{
+  z.addEventListener('click', ()=>{
+    document.querySelectorAll('.cell-zone').forEach(x=>x.classList.remove('active'));
+    z.classList.add('active');
+    document.getElementById('cell-info').innerHTML = cellData[z.dataset.zone];
+  });
+});
+
+/* ============ DIAGRAM 5: DNA binding bars ============ */
+const bindData = {
+  n7g: "<b>N7 of guanine</b> is cisplatin's primary DNA binding site — the main driver of its cross-linking and cytotoxic activity.",
+  n7a: "<b>N7 of adenine</b> is bound to a lesser degree than guanine's N7.",
+  n1a: "<b>N1 of adenine</b> is another minor binding site, alongside N7 of adenine.",
+  n3c: "<b>N3 of cytosine</b> is bound only to a lesser degree, completing the minor binding sites alongside adenine's N7 and N1."
+};
+document.querySelectorAll('.bind-row').forEach(r=>{
+  r.addEventListener('click', ()=>{
+    document.getElementById('bind-info').innerHTML = bindData[r.dataset.site];
+  });
+});
+
+/* ============ DIAGRAM 6: comparison matrix ============ */
+document.querySelectorAll('#matrix-chips .chip').forEach(c=>{
+  c.addEventListener('click', ()=>{
+    document.querySelectorAll('#matrix-chips .chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    document.querySelectorAll('#matrix-table tbody tr').forEach(tr=>{
+      tr.classList.toggle('highlight', tr.dataset.row === c.dataset.row);
+    });
+  });
+});
+document.querySelector('#matrix-table tbody tr[data-row="0"]').classList.add('highlight');
+
+/* ============ DIAGRAM 7: resistance web ============ */
+const resistData = {
+  entry: "<b>Decreased drug entry:</b> resistant cells reduce uptake of the platinum drug, lowering how much reaches its DNA target.",
+  efflux: "<b>Increased drug efflux:</b> cells pump the platinum complex back out faster than it can accumulate.",
+  repair: "<b>Enhanced DNA repair:</b> resistant cells repair platinum–DNA adducts more efficiently, undoing the cross-linking before it triggers apoptosis.",
+  removal: "<b>Removal of the platinum complex:</b> cellular mechanisms strip out or inactivate platinum already bound within the cell."
+};
+document.querySelectorAll('.web-node').forEach(n=>{
+  n.addEventListener('click', ()=>{
+    document.querySelectorAll('.web-node').forEach(x=>x.classList.remove('active'));
+    n.classList.add('active');
+    document.getElementById('resist-info').innerHTML = resistData[n.dataset.r];
+  });
+});
+
+/* ============ DIAGRAM 8: other drug candidates flip gallery ============ */
+const otherDrugs = [
+  {name:"Nedaplatin", front:"cis-diammineglycolato-Pt(II)", back:"Approved in Japan for head & neck, testicular, ovarian, lung and cervical cancer. Given by IV injection. Dose-limiting side effect: myelosuppression."},
+  {name:"Lobaplatin", front:"Used in Japan / China", back:"Treats non-small-cell lung cancer and breast cancer. Shows myelosuppression and mild hepatotoxicity. Not approved in the EU or by the FDA."},
+  {name:"Heptaplatin", front:"Used in South Korea", back:"Treats gastric cancer. Shows myelosuppression and mild hepatotoxicity, like lobaplatin. Not approved in the EU or by the FDA."},
+  {name:"Satraplatin", front:"A Pt(IV) complex", back:"Given orally — more hydrophobic than cisplatin. Milder toxicity, no cross-resistance with cisplatin. Completed phase III trials (+prednisone) for hormone-refractory prostate cancer, but survival gain was insufficient for FDA fast-track approval."}
+];
+const gallery = document.getElementById('other-gallery');
+otherDrugs.forEach(d=>{
+  const card = document.createElement('div');
+  card.className = 'flip-card';
+  card.innerHTML = `
+    <div class="flip-inner">
+      <div class="flip-face front">
+        <div class="k">Click to flip</div>
+        <div class="q">${d.name}</div>
+        <div class="a" style="margin-top:6px;">${d.front}</div>
+      </div>
+      <div class="flip-face back">
+        <div class="k">${d.name}</div>
+        <div class="a">${d.back}</div>
+      </div>
+    </div>`;
+  card.addEventListener('click', ()=>card.classList.toggle('flipped'));
+  gallery.appendChild(card);
+});
+
+/* ============ 3. MINI MAP ============ */
+const mapTopics = [
+  {title:"d-Block & transition metal definitions", body:`
+    <p>d-Block metals are the elements within groups 3 to 12 of the periodic table. The term <b>transition metal</b> is often used for the same group of elements.</p>
+    <p>IUPAC defines a transition metal more precisely: an element with an incomplete d subshell, or one that can form cations with an incomplete d subshell. Under this rule, the group 12 metals — zinc, cadmium and mercury — are not typically classified as transition metals, because their d subshell is always complete.</p>
+    <p>The phrase "heavier d-block metals" refers to d-block metals of the second and third row (the 4d and 5d series).</p>`},
+  {title:"Group 10 family overview", body:`
+    <p>Group 10 consists of the nonradioactive members nickel (Ni), palladium (Pd) and platinum (Pt), plus the radioactive element darmstadtium (Ds).</p>
+    <p>Palladium and platinum resist corrosion and are attacked by O₂, F₂ and Cl₂ only at very high temperatures. Palladium dissolves in hot oxidizing acids, whereas platinum dissolves only in aqua regia — a 1:3 mixture of HNO₃ and HCl.</p>`},
+  {title:"Electron configurations & oxidation states", body:`
+    <p>All three nonradioactive Group 10 elements show high diversity in electron configuration:</p>
+    <ul><li>Ni: [Ar] 4s² 3d⁸</li><li>Pd: [Kr] 4d¹⁰</li><li>Pt: [Xe] 4f¹⁴ 5d⁹ 6s¹</li></ul>
+    <p>Their most stable oxidation state is +II. Pt(II) has an electron configuration of d⁸, and square planar geometry is the dominant structure for this ion.</p>`},
+  {title:"Catalytic applications (Pd & Pt)", body:`
+    <p>Palladium is used as a hydrogenation catalyst, for H₂/D₂/T₂ separation and purification, and as a catalyst in the Wacker process — which facilitates the oxidation of ethylene to acetaldehyde.</p>
+    <p>Platinum is intensively used in HNO₃ production as an oxidation catalyst.</p>`},
+  {title:"Cisplatin: structure & synthesis", body:`
+    <p>Cisplatin (cisplatinum) is a neutral, purely inorganic compound — a yellow powder used as a chemotherapeutic agent. It was first synthesized in 1844, containing a platinum(II) center with two ammonia ligands (the nonleaving groups) and two chloride ligands (labile, exchangeable by nucleophiles).</p>
+    <p>[PtCl₄]²⁻ is the starting material for cisplatin's synthesis. The first NH₃ ligand can add to any of the four equivalent positions around the central Pt atom. The second NH₃ is then directed cis to the first, giving cisplatin.</p>`},
+  {title:"Cisplatin: mechanism of action", body:`
+    <p>Cisplatin's anticancer activity primarily arises from DNA adduct formation; its cytotoxicity is generally attributed to interaction between the metal complex and nuclear DNA.</p>
+    <p>Administered intravenously, the drug travels through the bloodstream to cancer cells. The high extracellular chloride concentration (>100 mM) keeps the platinum complex stable and prevents hydrolysis during transport.</p>
+    <p>Cellular uptake involves both passive and active transport — carrier proteins such as plasma membrane copper transporters and organic cation transporters may facilitate entry. Once inside the cell, the much lower intracellular chloride concentration (4 mM) triggers hydrolysis: cisplatin loses its chloride ligands, forming electrophilic mono- and diaqua species that bind cellular nucleophiles, including nucleic acids and thiol-containing proteins.</p>`},
+  {title:"Cisplatin: DNA binding", body:`
+    <p>Cisplatin binds to DNA primarily by coordination to the nitrogen (N7) atom of guanine, though it can also bind — to a lesser degree — to N7 and N1 of adenine, and N3 of cytosine.</p>
+    <p>Interaction with mitochondrial DNA is believed to be less important for cisplatin's antitumor activity than interaction with nuclear DNA.</p>`},
+  {title:"Resistance & toxicity", body:`
+    <p>Cisplatin chemotherapy often fails due to resistance, and its narrow therapeutic window prevents simply increasing the dose. Platinum-resistant cells exhibit reduced platinum binding due to decreased drug entry, increased drug efflux, enhanced DNA repair, and removal of the platinum complex.</p>
+    <p>Cisplatin's toxicity leads to severe side effects including nephrotoxicity, ototoxicity, and peripheral neuropathy — though some of these can be managed clinically.</p>`},
+  {title:"Carboplatin", body:`
+    <p>Carboplatin — cis-diamine(1,1-cyclobutanedicarboxylato)platinum(II) — was licensed by the FDA in 1989 as Paraplatin®, a second-generation platinum drug. Its structure is based on cisplatin, but the chloride ligands are exchanged for a bidentate chelating ligand.</p>
+    <p>Carboplatin is less nephrotoxic and ototoxic than cisplatin due to lower reactivity, but it is more myelosuppressive, increasing infection risk through reduced white blood cell count.</p>
+    <p>It is used alone or combined with other anticancer agents for head and neck cancer, ovarian cancer, small cell lung cancer, and testicular cancer. It is administered intravenously, dosed by body surface area or renal function, at doses three to six times higher than cisplatin due to lower reactivity and toxicity — making it better tolerated and suitable for outpatient administration.</p>
+    <p>Mechanistically, carboplatin's cbdca chelate must ring-open before the platinum center can interact with DNA — it behaves as a prodrug, exhibiting low reactivity until activated via hydrolysis and chelate ring-opening.</p>`},
+  {title:"Oxaliplatin", body:`
+    <p>Oxaliplatin — cis-[oxalato] trans-1,2-diaminocyclohexane platinum(II) — is marketed as Eloxatin®, a third-generation platinum-based anticancer drug. Its platinum center is coordinated by two chelating ligands: an oxalate ligand (the leaving group) and a DACH (1,2-diaminocyclohexane) ligand (the nonleaving group), replacing cisplatin's simple chloride and amino groups respectively.</p>
+    <p>Cisplatin and carboplatin hydrolyze to a common diamino-platinum species, but oxaliplatin's hydrolysis product contains the bulky DACH group, which sterically hinders the DNA mismatch-repair mechanism. These repair enzymes are particularly active in colon cancer, so oxaliplatin shows excellent activity against colon and rectal cancers.</p>
+    <p>It is most effective combined with 5-fluorouracil and leucovorin (5-FU/LV) for metastatic carcinomas of the colon or rectum. Oxaliplatin causes fewer side effects than cisplatin — less nephrotoxic, less ototoxic, less myelosuppressive — but its dose-limiting side effect is nerve damage, which may not be reversible with chronic exposure. It's given intravenously as an infusion over 2–6 hours, in doses similar to cisplatin.</p>`},
+  {title:"Other platinum drug candidates", body:`
+    <p>Numerous platinum compounds are researched as potential anticancer agents, but only a few have reached the clinic — cisplatin, carboplatin, and oxaliplatin remain the most successful.</p>
+    <p><b>Nedaplatin</b> (cis-diammineglycolatoplatinum(II)) is structurally similar to carboplatin, but uses the dianionic form of glycolic acid as its leaving group instead of cbdca. Approved for clinical use in Japan for head and neck, testicular, ovarian, lung and cervical cancer; given by IV injection; dose-limiting side effect is myelosuppression.</p>
+    <p><b>Lobaplatin</b> is used in Japan to treat non-small-cell lung cancer and breast cancer. <b>Heptaplatin</b> is used to treat gastric cancer. Both drugs show myelosuppression and mild hepatotoxicity, and neither has been approved in the EU or by the FDA.</p>
+    <p><b>Satraplatin</b> is a Pt(IV) complex, administered orally — more convenient — because it's more hydrophobic than cisplatin. It has a milder toxicity profile and shows no cross-resistance with cisplatin. Combined with prednisone, it completed phase III clinical trials against hormone-refractory prostate cancer; results were encouraging, but overall survival didn't improve significantly enough, so the FDA did not grant fast-track approval.</p>
+    <p>The development of new platinum drugs is generally hampered by low efficacy, high toxicity, and poor aqueous solubility — a common problem for transition-metal-based compounds that limits their clinical use.</p>`}
+];
+const mapTree = document.getElementById('map-tree');
+const mapPane = document.getElementById('map-pane');
+mapTopics.forEach((t,i)=>{
+  const btn = document.createElement('button');
+  btn.className = 'map-node';
+  btn.innerHTML = `<span class="mnum">${String(i+1).padStart(2,'0')}</span>${t.title}`;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.map-node').forEach(n=>n.classList.remove('active'));
+    btn.classList.add('active');
+    mapPane.innerHTML = `<h3>${t.title}</h3><div class="subhead">Topic ${String(i+1).padStart(2,'0')} of ${mapTopics.length}</div>${t.body}`;
+  });
+  mapTree.appendChild(btn);
+});
+
+/* ============ 4. FLASH CARDS ============ */
+const flashcardsL1 = [["Which periodic table groups contain the d-block metals?", "Groups 3 to 12."], ["What is the IUPAC definition of a transition metal?", "An element with an incomplete d subshell, or one that can form a cation with an incomplete d subshell."], ["What is another common name for d-block metals?", "Transition metals."], ["Which three Group 12 metals are NOT classified as transition metals?", "Zinc (Zn), cadmium (Cd), and mercury (Hg)."], ["What does \"heavier d-block metals\" mean?", "d-Block metals of the second and third rows (4d and 5d series)."], ["Name the three nonradioactive Group 10 metals.", "Nickel (Ni), palladium (Pd), platinum (Pt)."], ["Which Group 10 element is radioactive?", "Darmstadtium (Ds)."], ["Under what condition do O2, F2, and Cl2 attack Pd and Pt?", "Only at very high temperatures — otherwise they resist corrosion."], ["What dissolves palladium?", "Hot oxidizing acids."], ["What is the only solvent that dissolves platinum?", "Aqua regia (a 1:3 mixture of HNO3 and HCl)."], ["What is the HNO3:HCl ratio in aqua regia?", "1:3."], ["What three catalytic roles does palladium play?", "Hydrogenation catalyst, H2/D2/T2 separation & purification, and the Wacker process catalyst."], ["What does the Wacker process do?", "Oxidizes ethylene to acetaldehyde, using a palladium catalyst."], ["What is platinum's major industrial catalytic role?", "Oxidation catalyst in HNO3 (nitric acid) production."], ["Give the electron configuration of nickel.", "[Ar] 4s2 3d8"], ["Give the electron configuration of palladium.", "[Kr] 4d10"], ["Give the electron configuration of platinum.", "[Xe] 4f14 5d9 6s1"], ["What is the most stable oxidation state for Ni, Pd, and Pt?", "+II."], ["What is the d-electron count of Pt(II)?", "d8."], ["What geometry does Pt(II) adopt?", "Square planar."], ["What kind of compound is cisplatin?", "A neutral, purely inorganic compound — a yellow powder used as a chemotherapeutic agent."], ["When was cisplatin first synthesized?", "1844."], ["How many ammonia ligands does cisplatin contain?", "Two."], ["How many chloride ligands does cisplatin contain?", "Two."], ["Which ligands in cisplatin are the \"nonleaving groups\"?", "The two ammonia (NH3) ligands."], ["Which ligands in cisplatin are labile and exchangeable?", "The two chloride ligands."], ["How does cisplatin kill cancer cells?", "It binds DNA and causes cross-linking, which triggers apoptosis (programmed cell death)."], ["Which cancers is cisplatin specifically effective against?", "Ovarian, testicular, uterine, bladder, and head & neck cancers."], ["What is the starting material for cisplatin synthesis?", "[PtCl4]2-"], ["What ligand is added stepwise to [PtCl4]2- to make cisplatin?", "Ammonia (NH3)."], ["How is cisplatin typically administered?", "Intravenously (IV)."], ["What is the extracellular (blood/plasma) chloride concentration?", "About >100 mM."], ["What is the intracellular (cytosolic) chloride concentration?", "About 4 mM."], ["What type of platinum species form once cisplatin loses its chloride ligands inside the cell?", "Electrophilic mono- and diaqua platinum species."], ["Where does cisplatin bind DNA primarily?", "The N7 nitrogen atom of guanine."], ["Name one mechanism of cisplatin resistance.", "Decreased drug entry, increased efflux, enhanced DNA repair, or removal of the platinum complex (any one)."], ["What are cisplatin's major toxicities?", "Nephrotoxicity, ototoxicity, and peripheral neuropathy."], ["What is carboplatin's trade name?", "Paraplatin®."], ["In what year was carboplatin licensed by the FDA?", "1989."], ["Which generation of platinum drug is carboplatin?", "Second-generation."], ["What type of ligand replaces chloride in carboplatin?", "A bidentate chelating ligand (cbdca)."], ["Is carboplatin more or less nephrotoxic than cisplatin?", "Less nephrotoxic."], ["What side effect is carboplatin more likely to cause than cisplatin?", "Myelosuppression."], ["How is carboplatin administered?", "Intravenously."], ["How much higher is a typical carboplatin dose compared with cisplatin?", "Three to six times higher."], ["What is oxaliplatin's trade name?", "Eloxatin®."], ["Which generation of platinum drug is oxaliplatin?", "Third-generation."], ["What nonleaving ligand is unique to oxaliplatin?", "DACH (1,2-diaminocyclohexane)."], ["What leaving group does oxaliplatin have?", "An oxalato group."], ["Which combination therapy is oxaliplatin most effective with?", "5-fluorouracil and leucovorin (5-FU/LV)."], ["What is oxaliplatin's dose-limiting side effect?", "Nerve damage (peripheral neuropathy)."], ["Over what time period is oxaliplatin typically infused?", "2 to 6 hours."], ["In which country is nedaplatin approved for clinical use?", "Japan."], ["What leaving group does nedaplatin have?", "The dianionic form of glycolic acid."], ["What is nedaplatin's dose-limiting side effect?", "Myelosuppression."], ["Which cancer does heptaplatin treat?", "Gastric cancer."], ["Which two cancers does lobaplatin treat in Japan?", "Non-small-cell lung cancer and breast cancer."], ["What oxidation state is satraplatin?", "Platinum(IV) — a Pt+4 complex."], ["How is satraplatin administered, and why?", "Orally, because it is more hydrophobic than cisplatin."], ["With which drug did satraplatin complete phase III trials for prostate cancer?", "Prednisone (satraplatin + prednisone)."]];
+const flashcardsL2 = [["Why are zinc, cadmium, and mercury excluded from the transition metals despite being d-block elements?", "Their d subshell (d10) is always complete, even in their cation forms, so they don't meet the IUPAC definition."], ["How does the IUPAC definition of a transition metal differ from simply being a \"d-block\" element?", "d-block is a positional definition (groups 3-12); \"transition metal\" is functional — it requires an incomplete d subshell in the element or its cations, which excludes Zn, Cd, Hg."], ["Why do palladium and platinum resist corrosion from O2, F2, and Cl2 under ordinary conditions?", "Their inert, noble-metal character makes them chemically unreactive except under very high temperatures."], ["Why does platinum need aqua regia to dissolve, while palladium dissolves in hot oxidizing acids alone?", "Platinum's greater noble stability needs the combined oxidizing/complexing action of aqua regia (Cl- traps oxidized Pt while HNO3 oxidizes it); palladium is reactive enough for oxidizing acids alone."], ["Why is the Wacker process a notable example of palladium catalysis?", "It shows Pd(II)/Pd(0) redox catalysis oxidizing ethylene to acetaldehyde, a distinctive industrial role of palladium."], ["How do the electron configurations of Ni, Pd, and Pt illustrate the \"high diversity\" noted for Group 10?", "Ni fills 4s before 3d ([Ar]4s2 3d8), Pd skips 5s entirely for a full 4d10, and Pt has an anomalous single 6s electron with 5d9 instead of a filled 5d10 6s2."], ["Why does Pt(II) adopt a square planar geometry rather than a tetrahedral one?", "Because it has a d8 electron configuration, which favors square planar geometry."], ["Why are the ammonia ligands in cisplatin \"nonleaving\" while the chlorides are labile?", "Ammonia binds more strongly (kinetically inert) to Pt(II), while chloride is more weakly bound and easily displaced by nucleophiles."], ["Why must the second NH3 added during cisplatin synthesis end up cis, not trans, to the first?", "All four positions around [PtCl4]2- are equivalent for the first substitution; the second NH3 is directed cis to the first, yielding the required cis isomer."], ["Why does the high extracellular chloride concentration (>100 mM) protect cisplatin during transport through blood?", "It shifts the Pt-Cl hydrolysis equilibrium toward the intact chloride form, keeping cisplatin stable until it enters a cell."], ["Why does cisplatin hydrolyze specifically inside the cell rather than outside it?", "Intracellular Cl- (~4 mM) is far lower than extracellular Cl- (~100 mM), shifting the equilibrium toward aquation."], ["Why are the mono- and diaqua cisplatin species described as \"electrophilic\"?", "Water is a better leaving group than chloride, making these aquated species more reactive toward nucleophiles like DNA bases and thiols."], ["Besides passive diffusion, what facilitates cisplatin's cellular uptake?", "Carrier proteins such as plasma membrane copper transporters and organic cation transporters."], ["Why does cisplatin preferentially bind the N7 position of guanine?", "N7-guanine is the most nucleophilic and sterically accessible site, lying in the major groove and not involved in base pairing."], ["Why is mitochondrial DNA interaction considered less important for cisplatin's antitumor activity?", "The therapeutic (cross-linking/apoptosis) mechanism is attributed mainly to nuclear DNA adduct formation."], ["Why can't oncologists simply raise the cisplatin dose to overcome tumor resistance?", "Cisplatin has a narrow therapeutic window, so a higher dose risks unacceptable toxicity."], ["How do \"decreased drug entry\" and \"increased drug efflux\" both cause cisplatin resistance through the same underlying effect?", "Both reduce the net intracellular concentration of active platinum available to bind DNA."], ["Why does enhanced DNA repair contribute to cisplatin resistance?", "It lets resistant cells remove or repair platinum-DNA adducts before they trigger apoptosis."], ["Why do nephrotoxicity, ototoxicity, and peripheral neuropathy occur despite cisplatin's DNA-targeted mechanism?", "Platinum species aren't tumor-selective — they can also react with DNA/proteins in kidney, ear, and nerve tissue."], ["Why was there still a need for novel platinum drugs even after cisplatin's clinical success?", "Because of cisplatin's toxicity, acquired resistance, and the demand for broader-spectrum platinum agents."], ["What structural change turns cisplatin into carboplatin, and what effect does this have?", "The two labile chlorides are replaced by a bidentate cbdca chelate, which is more stable/less reactive, lowering toxicity and potency."], ["Why is carboplatin less nephro-/ototoxic than cisplatin, yet more myelosuppressive?", "Its stable chelate spares kidney/ear tissue, but its reduced reactivity requires much higher doses, which more strongly suppresses bone marrow."], ["Why must carboplatin be dosed three to six times higher than cisplatin?", "Its lower reactivity (from the stable chelating ligand) makes it less potent per mole, so a higher dose is needed for comparable efficacy."], ["Why is carboplatin considered a \"prodrug\"?", "It has low reactivity until hydrolysis opens the cbdca chelate ring, activating the platinum center to react with DNA."], ["Why can carboplatin often be given on an outpatient basis?", "Its lower reactivity/toxicity profile makes it better tolerated than cisplatin."], ["How does oxaliplatin's ligand set differ from cisplatin's?", "Chloride leaving groups are replaced by an oxalato group, and ammonia nonleaving groups are replaced by the bulky DACH ligand."], ["Why do cisplatin and carboplatin hydrolyze to a similar species while oxaliplatin does not?", "Cisplatin/carboplatin hydrolyze to a common small diamino-platinum species, but oxaliplatin's product retains the bulky, nonleaving DACH group."], ["Why does the bulky DACH group make oxaliplatin especially effective against colon cancer?", "It sterically hinders DNA mismatch repair enzymes, which are particularly active in colon cancer cells."], ["Why is oxaliplatin usually combined with 5-fluorouracil and leucovorin?", "Because it is most effective in this combination for treating metastatic colorectal carcinomas."], ["Why does oxaliplatin cause a distinct dose-limiting toxicity (nerve damage) rather than cisplatin's classic toxicities?", "Its different hydrolysis chemistry and DACH ligand alter its tissue reactivity/distribution, sparing kidney/ear/marrow but affecting nerves."], ["How does nedaplatin's leaving group differ from carboplatin's?", "Nedaplatin uses the dianionic form of glycolic acid, while carboplatin uses the cbdca chelate."], ["Why might nedaplatin's dose-limiting myelosuppression be expected, given its similarity to carboplatin?", "It shares carboplatin's overall design (Pt(II), cis-ammonia, chelating O,O leaving group), so it likely shares a similar toxicity shift toward marrow."], ["Why have lobaplatin and heptaplatin achieved only limited worldwide clinical success?", "Despite regional approval, they show myelosuppression and mild hepatotoxicity and are not approved in the EU or by the FDA."], ["Why is satraplatin's oral route considered advantageous over cisplatin's IV route?", "Satraplatin is more hydrophobic than cisplatin, allowing oral absorption and more convenient dosing."], ["Why does satraplatin show no cross-resistance with cisplatin?", "As a structurally distinct Pt(IV) complex needing different activation, it isn't affected by the resistance mechanisms that limit cisplatin."], ["Why did satraplatin fail to gain FDA fast-track approval despite encouraging phase III results?", "The overall survival rate did not improve significantly enough."], ["What common problem links the limited approval of nedaplatin, lobaplatin, heptaplatin, and satraplatin?", "Low efficacy, high toxicity, and poor aqueous solubility — common issues for transition-metal-based compounds."], ["Why are carboplatin and oxaliplatin singled out as the only successful 2nd/3rd-generation platinum drugs registered worldwide?", "Unlike most other candidates, which achieved only regional approval or failed, they gained broad global clinical acceptance."], ["How does the leaving-group/nonleaving-group concept explain the differing profiles of cisplatin, carboplatin, and oxaliplatin?", "The nonleaving ligand sets DNA-binding geometry, while the leaving group controls activation kinetics, shaping efficacy, resistance, and toxicity."], ["Why does carboplatin tolerate a higher dose than cisplatin without proportionally higher classic toxicity?", "Its wider therapeutic window (from lower reactivity) allows higher doses before reaching toxic thresholds."], ["Why is Group 10 chemistry (favoring +II, d8, square planar Pt) relevant background for platinum anticancer drugs?", "It's exactly the structural basis exploited in cisplatin, carboplatin, and oxaliplatin."], ["Why do carrier proteins like copper transporters help transport cisplatin, even though it contains no copper?", "Cisplatin's ionic/structural similarity lets it be recognized by transporters normally used for other cations."], ["Why is DNA cross-linking, not simple binding, key to cisplatin's cytotoxicity?", "Cross-linking distorts the helix and blocks replication/transcription, which is what triggers apoptosis."], ["What drug-design principle do cisplatin, carboplatin, and oxaliplatin illustrate as a series?", "Replacing labile ligands with more stable chelating ligands reduces toxicity, with trade-offs in dose or resistance profile."], ["Why is Pd more useful than Pt for H2/D2/T2 separation and purification?", "Pd's favorable reactivity and d-electron configuration suit it to absorbing and diffusing hydrogen isotopes."], ["What does \"prodrug\" mean specifically for carboplatin, and why does it matter clinically?", "It's given in a low-reactivity form that must be metabolically activated (hydrolysis/ring-opening) to become cytotoxic, aiding tolerability."], ["Why does the passage note cisplatin's mechanism is \"still under investigation\" despite decades of use?", "Although DNA adduct formation is the leading explanation, the full mechanistic path to cell death isn't fully resolved."], ["What unifying theme connects Group 10 chemistry, cisplatin's discovery, and later platinum drugs?", "Platinum's +II, d8, square-planar chemistry being progressively refined via ligand substitution to balance efficacy against toxicity/resistance."], ["Why does platinum's resistance to O2/F2/Cl2 attack matter for both its industrial and pharmaceutical uses?", "Its chemical inertness under ambient conditions reflects a stability later exploited (in different forms) both industrially and in engineered anticancer complexes."], ["Why is intrastrand DNA cross-linking, rather than interstrand, the basis of cisplatin's cytotoxicity?", "Cisplatin preferentially binds two adjacent bases (e.g., neighboring guanines) on the same DNA strand, which the cis geometry of the complex allows."]];
+const flashcardsL3 = [["A tumor has upregulated DNA mismatch repair (MMR). Which platinum drug is least effective against it, and why?", "Cisplatin (and carboplatin), because their small aquated adducts are more easily recognized and repaired by intact MMR; oxaliplatin's bulky DACH adduct sterically blocks MMR instead."], ["Explain, mechanistically, why cisplatin is inert in blood but reactive in the cytosol, using Le Chatelier's principle.", "The Pt-Cl hydrolysis equilibrium (Pt-Cl + H2O ⇌ Pt-OH2 + Cl-) is pushed toward the chloride form by high extracellular Cl- (~100 mM) and toward the reactive aquated form by low intracellular Cl- (~4 mM)."], ["A patient develops severe myelosuppression on carboplatin despite tolerating cisplatin well. Reconcile this with carboplatin's \"better\" toxicity profile.", "Carboplatin is less nephro-/ototoxic due to lower reactivity, but this requires 3-6x higher doses, which increases myelosuppression risk — toxicity is shifted, not eliminated."], ["Compare the nonleaving/leaving ligand roles across cisplatin, carboplatin, and oxaliplatin, and explain how each shapes clinical niche.", "The nonleaving ligand (NH3, NH3, DACH) sets DNA-adduct geometry; the leaving group (Cl, cbdca, oxalato) sets activation kinetics — together determining reactivity, toxicity, dosing, and (for DACH) evasion of DNA repair in specific tumor types."], ["Why does satraplatin (Pt(IV)) need in vivo activation, and how does this relate to its oral bioavailability?", "Pt(IV) is octahedral and substitution-inert, letting it survive the GI tract; it's later reduced to active Pt(II). Its greater lipophilicity also favors passive gut absorption, enabling oral dosing."], ["Predict the dosing/toxicity profile of a hypothetical drug with a bidentate leaving group even more inert than cbdca.", "It would likely need an even higher dose than carboplatin (slower activation), showing reduced acute nephro-/ototoxicity but possibly greater myelosuppression from higher cumulative platinum exposure."], ["Why is square planar Pt(II), not octahedral Pt(IV) or tetrahedral geometry, exploited for DNA cross-linking?", "The d8 square planar center has two cis-accessible labile sites that can simultaneously bind two adjacent DNA bases — a geometric requirement other arrangements can't satisfy as well."], ["Trace the causal chain from cisplatin's N7-guanine binding to apoptosis.", "Pt binds N7 of two adjacent guanines (intrastrand cross-link) → helix distortion/blocked replication → damage-response detection → apoptosis is triggered."], ["To reduce oxaliplatin's neurotoxicity without losing colorectal efficacy, which feature must be preserved?", "The bulky DACH nonleaving ligand, since it is what sterically evades DNA mismatch repair and drives colorectal efficacy."], ["Why are \"low efficacy, high toxicity, poor solubility\" described as general transition-metal-drug problems, not just platinum's?", "d-block metals' variable oxidation states/ligand-exchange chemistry that enables biological reactivity also predisposes to off-target binding, poor permeability, and low solubility."], ["Why does satraplatin show no cross-resistance with cisplatin, given cisplatin's known resistance mechanisms?", "As a structurally distinct Pt(IV) complex needing separate activation, satraplatin likely isn't affected by the entry/efflux/repair mechanisms specific to cisplatin's Pt(II) chemistry."], ["If a tumor's main resistance mechanism is enhanced DNA repair, how would oxaliplatin's relative efficacy compare to an MMR-deficient tumor?", "In an MMR-deficient tumor, oxaliplatin's specific advantage (blocking active MMR) would narrow, since there is little functional repair machinery left to impair."], ["Why is Pt's [Xe]4f14 5d9 6s1 configuration anomalous relative to a simple Aufbau prediction of 5d8 6s2?", "A small 5d-6s energy gap and relativistic stabilization of 5d favor promoting one 6s electron into 5d for extra exchange stabilization."], ["Why couldn't a hypothetical Pt(0) complex reproduce cisplatin's cross-linking mechanism?", "Only the d8, +2, square planar state gives the correct cis-labile, electrophilic coordination sites needed for substitution chemistry with DNA nucleophiles."], ["Categorize carboplatin's vs. oxaliplatin's primary design goals (reduce toxicity vs. overcome resistance/expand indications).", "Carboplatin: reduce toxicity via a stabler leaving group (at the cost of higher dose). Oxaliplatin: overcome resistance/expand indications via a bulky DACH ligand that evades DNA repair."], ["How does \"narrow therapeutic window\" constrain dosing strategy differently for cisplatin vs. carboplatin?", "Cisplatin's narrow window blocks dose escalation to beat resistance; carboplatin's wider window (lower reactivity) permits 3-6x higher doses safely."], ["For a drug engineered only to improve membrane permeability (entry), which resistance mechanisms would still undermine it?", "Enhanced DNA repair and increased efflux, since improved entry alone doesn't stop resistant cells from pumping the drug out or repairing formed adducts."], ["Why is chloride specifically required to dissolve platinum in aqua regia but not needed for palladium in oxidizing acids?", "Pt's greater noble stability requires Cl- to complex the oxidized Pt center (soluble chlorocomplex) alongside HNO3 oxidation; Pd's lower reduction potential lets oxidizing acid alone dissolve it."], ["What does cisplatin's N7-guanine selectivity (over base-pairing positions) suggest about its cytotoxic mechanism?", "It modifies DNA without directly breaking Watson-Crick hydrogen bonds; cytotoxicity instead comes from cross-linking-induced helix distortion."], ["What does satraplatin's failed FDA fast-track bid reveal about approval criteria beyond safety improvements?", "Improved tolerability/no cross-resistance alone are insufficient — a statistically significant survival benefit is also required for expedited approval."], ["Why can chemically similar Pt(II) drugs require IV administration while satraplatin (Pt(IV)) is given orally?", "Pt(II) complexes with small polar/labile ligands are hydrophilic/reactive (suited to IV); satraplatin's lipophilic, substitution-inert Pt(IV) structure survives the gut and crosses membranes, enabling oral use."], ["Predict oxaliplatin's relative efficacy in a tumor whose dominant resistance mechanism is enhanced DNA repair.", "Likely better than cisplatin's, since oxaliplatin's bulky adduct specifically impairs the repair pathway conferring that resistance."], ["What is the key trade-off between Pt(II) and Pt(IV) anticancer agents, given Group 10's preference for +II?", "Pt(II) is directly reactive (fast, potent, broadly toxic, IV-only); Pt(IV) is a substitution-inert prodrug needing reduction, trading potency for oral bioavailability and a different toxicity/resistance profile."], ["What is the one key structural difference distinguishing nedaplatin from carboplatin?", "The leaving group — cbdca in carboplatin vs. the dianionic form of glycolic acid in nedaplatin."], ["What does nedaplatin sharing carboplatin-like myelosuppression suggest about their activation chemistries?", "Despite a different leaving group, both share a delayed-reactivity, prodrug-like design that shifts toxicity toward bone marrow rather than kidneys/ears."], ["What does cisplatin and carboplatin sharing a common hydrolysis product imply about their resistance profiles?", "Resistance mechanisms targeting that shared reactive species likely confer cross-resistance between the two drugs, unlike oxaliplatin's distinct DACH adduct."], ["Why wouldn't oxaliplatin's colorectal efficacy be expected to overlap with cisplatin's classic indications?", "Oxaliplatin's efficacy depends on high baseline mismatch-repair activity, a tissue-specific feature not shared by ovarian, testicular, bladder, or head & neck tumors."], ["Predict the toxicity/dose profile of a drug with an even more labile leaving group than chloride, relative to cisplatin and carboplatin.", "Likely similar-to-greater toxicity than cisplatin (high reactivity) and a lower required dose than carboplatin (higher potency per molecule)."], ["What mechanistic parallel links platinum metal's inertness to O2/F2/Cl2 and Pt(IV) drugs' substitution inertness?", "Both reflect stability exploited until a specific trigger (very high temperature; in vivo reduction) unlocks reactivity."], ["Summarize the drug-design arc cisplatin → carboplatin → oxaliplatin → satraplatin and the problem each addressed.", "Carboplatin: toxicity (stabler leaving group, higher dose). Oxaliplatin: resistance/tumor-type limits (bulky DACH evades repair). Satraplatin: administration convenience (oral Pt(IV) prodrug), though survival benefit fell short."], ["Why is poor aqueous solubility a bigger liability for oral satraplatin than for IV cisplatin?", "An oral drug must dissolve in GI fluids and be absorbed across the gut; an IV drug bypasses this dissolution/absorption step."], ["What shared property explains palladium's use in both H2/D2/T2 separation and hydrogenation catalysis?", "Its ability to absorb hydrogen (and isotopes) into its lattice and activate H-H bonds at its surface."], ["How does Pd(II)/Pd(0) redox cycling relate to its role as the Wacker process catalyst?", "This cycling lets Pd coordinate ethylene, facilitate its oxidation to acetaldehyde, and regenerate the active catalyst."], ["Predict cisplatin uptake/cytotoxicity in a tumor overexpressing organic cation transporters.", "Increased uptake and enhanced cytotoxicity, since these transporters facilitate cisplatin's active/facilitated cellular entry."], ["Why does intrastrand cross-linking favor a cis- rather than trans-diammineplatinum geometry?", "Only the cis arrangement places both labile sites close enough to simultaneously reach two adjacent bases on the same DNA strand."], ["What pharmacological logic links carboplatin's reduced reactivity to both its lower toxicity and its need for a higher dose?", "Lower reactivity means fewer molecules bind DNA per dose, reducing both off-target toxicity and on-target efficacy, so a higher dose restores comparable efficacy."], ["Why does the passage separate \"acquired cisplatin resistance\" from \"demand for broad-spectrum anticancer agents\" as two distinct drivers?", "One concerns durability of response in cancers cisplatin can treat; the other concerns extending platinum therapy to cancer types cisplatin doesn't treat effectively."], ["Would oxaliplatin retain efficacy in a colorectal tumor with fully functional mismatch repair? Explain.", "Yes — its steric bulk is precisely what impairs the repair machinery's ability to process the adduct, so intact MMR doesn't eliminate the advantage."], ["Which drug best exemplifies \"reduced reactivity improves tolerability at the cost of needing activation,\" with textual evidence?", "Carboplatin — explicitly described as a prodrug with low reactivity until hydrolysis and chelate ring-opening activate it."], ["State a general rule linking ligand design (leaving-group lability, nonleaving-group bulk) to a platinum drug's potency, toxicity, dose, and tumor selectivity.", "Labile leaving groups + small nonleaving groups → potent, broadly toxic, low-dose drugs. Stable chelating leaving groups → lower toxicity, higher dose. Bulky nonleaving groups → altered adduct chemistry that evades specific repair pathways, unlocking new tumor-type efficacy."]];
+const fcLevels = {1:flashcardsL1, 2:flashcardsL2, 3:flashcardsL3};
+let fcCurrentLevel = 1;
+const fcGrid = document.getElementById('fc-grid');
+function renderFlashcards(){
+  const flashcards = fcLevels[fcCurrentLevel];
+  fcGrid.innerHTML = '';
+  flashcards.forEach((pair,i)=>{
+    const card = document.createElement('div');
+    card.className = 'fc-card';
+    card.innerHTML = `
+      <div class="fc-inner">
+        <div class="fc-face front">
+          <div class="fc-idx"><span>Card ${i+1}</span><span>Q</span></div>
+          <div class="txt-body">${pair[0]}</div>
+          <div class="fc-flip-note">Click to reveal answer</div>
+        </div>
+        <div class="fc-face back">
+          <div class="fc-idx"><span>Card ${i+1}</span><span>A</span></div>
+          <div class="txt-body">${pair[1]}</div>
+          <div class="fc-flip-note">Click to flip back</div>
+        </div>
+      </div>`;
+    card.addEventListener('click', ()=>card.classList.toggle('flipped'));
+    fcGrid.appendChild(card);
+  });
+  document.getElementById('fc-count').textContent = flashcards.length + ' cards';
+}
+document.querySelectorAll('#fc-level-row .chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    document.querySelectorAll('#fc-level-row .chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    fcCurrentLevel = Number(chip.dataset.level);
+    renderFlashcards();
+  });
+});
+renderFlashcards();
+document.getElementById('fc-flip-all').addEventListener('click', ()=>{
+  document.querySelectorAll('.fc-card').forEach(c=>c.classList.toggle('flipped'));
+});
+
+/* ============ 5. QUIZ BANK ============ */
+const quizL1 = [["Which groups of the periodic table define the d-block metals?", "Groups 3 to 12", ["Groups 1 to 2", "Groups 13 to 18", "Groups 1 to 12"]], ["What is another common name for d-block metals?", "Transition metals", ["Main-group metals", "Lanthanides", "Post-transition metals"]], ["According to IUPAC, a transition metal is an element that has...", "an incomplete d subshell, or forms a cation with an incomplete d subshell", ["a complete d subshell in every ion it forms", "only s and p valence electrons", "a full f subshell"]], ["Which Group 12 metals are NOT classified as transition metals?", "Zinc, cadmium, and mercury", ["Nickel, palladium, and platinum", "Copper, silver, and gold", "Scandium, yttrium, and lanthanum"]], ["The term \"heavier d-block metals\" refers to elements in which rows?", "The second and third d-block rows (4d and 5d series)", ["The first d-block row only (3d series)", "The f-block rows", "All seven periods equally"]], ["Which are the nonradioactive members of Group 10?", "Nickel, palladium, and platinum", ["Nickel, silver, and gold", "Cobalt, rhodium, and iridium", "Iron, ruthenium, and osmium"]], ["Which Group 10 element is radioactive?", "Darmstadtium (Ds)", ["Platinum (Pt)", "Palladium (Pd)", "Nickel (Ni)"]], ["Under what conditions do O2, F2, and Cl2 attack palladium and platinum?", "Only at very high temperatures", ["At room temperature", "Only in aqueous solution", "Only under UV light"]], ["Palladium dissolves in...", "hot oxidizing acids", ["aqua regia only", "cold water", "dilute hydrochloric acid alone"]], ["Platinum dissolves only in...", "aqua regia (1:3 HNO3:HCl)", ["hot nitric acid alone", "hot oxidizing acids in general", "concentrated hydrochloric acid"]], ["Palladium is a catalyst in which industrial process?", "The Wacker process (oxidation of ethylene to acetaldehyde)", ["The Haber process", "The Contact process", "The Ostwald process"]], ["Platinum is intensively used as an oxidation catalyst in the production of...", "HNO3 (nitric acid)", ["H2SO4 (sulfuric acid)", "NH3 (ammonia)", "HCl (hydrochloric acid)"]], ["What is the electron configuration of nickel (Ni)?", "[Ar] 4s2 3d8", ["[Kr] 4d10", "[Xe] 4f14 5d9 6s1", "[Ar] 3d10"]], ["What is the electron configuration of palladium (Pd)?", "[Kr] 4d10", ["[Ar] 4s2 3d8", "[Xe] 4f14 5d9 6s1", "[Kr] 5s2 4d8"]], ["What is the electron configuration of platinum (Pt)?", "[Xe] 4f14 5d9 6s1", ["[Xe] 4f14 5d10", "[Kr] 4d10", "[Ar] 4s2 3d8"]], ["What is the most stable oxidation state shared by Ni, Pd, and Pt?", "+II", ["+IV", "0", "+VI"]], ["Pt(II) has which electron configuration and preferred geometry?", "d8, square planar", ["d6, octahedral", "d10, tetrahedral", "d8, tetrahedral"]], ["What type of compound is cisplatin?", "A neutral, purely inorganic yellow powder", ["An organic acidic liquid", "A charged coordination polymer", "A radioactive isotope"]], ["In what year was cisplatin first synthesized?", "1844", ["1965", "1978", "1900"]], ["In cisplatin, which ligands are the nonleaving groups?", "The two ammonia (NH3) ligands", ["The two chloride ligands", "One ammonia and one chloride", "The oxalate ligand"]], ["How does cisplatin ultimately trigger cancer cell death?", "By binding DNA and causing cross-linking, which triggers apoptosis", ["By blocking cell membrane transport proteins", "By inhibiting protein synthesis directly", "By generating free radicals in mitochondria only"]], ["[PtCl4]2- serves as the starting material for the synthesis of...", "Cisplatin", ["Oxaliplatin", "Carboplatin", "Satraplatin"]], ["Why does cisplatin remain stable while traveling through the bloodstream?", "The high extracellular chloride concentration (>100 mM) suppresses hydrolysis", ["Blood pH inactivates the platinum center", "Plasma proteins fully encapsulate the drug", "Body temperature is too low for hydrolysis"]], ["What is the approximate intracellular (cytosolic) chloride concentration that triggers cisplatin hydrolysis?", "About 4 mM", ["About 100 mM", "About 50 mM", "About 25 mM"]], ["Cisplatin binds DNA primarily at which position?", "The N7 nitrogen atom of guanine", ["The N3 nitrogen atom of guanine", "The phosphate backbone only", "The O6 oxygen of guanine"]], ["Besides guanine, cisplatin can bind to a lesser degree at...", "N7/N1 of adenine and N3 of cytosine", ["N9 of thymine and O2 of uracil", "The sugar-phosphate backbone exclusively", "N1 of guanine only"]], ["Which mechanisms let platinum-resistant cancer cells reduce platinum binding?", "Decreased drug entry, increased efflux, enhanced DNA repair, and removal of the platinum complex", ["Increased chloride channel expression only", "Overexpression of guanine bases", "Reduced mitochondrial DNA content only"]], ["Which severe side effects are associated with cisplatin toxicity?", "Nephrotoxicity, ototoxicity, and peripheral neuropathy", ["Hepatotoxicity and hair loss only", "Hyperglycemia and hypertension", "Osteoporosis and anemia only"]], ["Carboplatin's structure differs from cisplatin's mainly because...", "its chloride ligands are replaced by a bidentate chelating ligand (cbdca)", ["its ammonia ligands are replaced by chloride", "it contains a DACH ligand instead of ammonia", "it is a platinum(IV) complex"]], ["Compared with cisplatin, carboplatin is...", "less nephrotoxic and ototoxic, but more myelosuppressive", ["more nephrotoxic and less myelosuppressive", "equally toxic in every respect", "only active orally"]], ["Carboplatin was licensed by the FDA in 1989 under which trade name?", "Paraplatin®", ["Eloxatin®", "Platinol®", "Paraplat®"]], ["What triggers carboplatin's activation as a prodrug?", "Hydrolysis and ring-opening of its cbdca chelate", ["Oxidation of its platinum(II) center to platinum(IV)", "Enzymatic cleavage by liver CYP450", "Binding directly to mitochondrial DNA"]], ["Oxaliplatin's nonleaving ligand is called...", "DACH (1,2-diaminocyclohexane)", ["cbdca (cyclobutanedicarboxylate)", "Glycolate", "Ammonia"]], ["Why is oxaliplatin especially effective against colorectal cancer?", "Its bulky DACH-containing hydrolysis product sterically hinders DNA mismatch repair, which is highly active in colon cancer cells", ["It selectively accumulates in colon tissue due to pH", "It is metabolized only by colon enzymes", "It binds exclusively to colon-specific proteins"]], ["Oxaliplatin is most effective clinically when combined with...", "5-fluorouracil and leucovorin (5-FU/LV)", ["Prednisone", "Cisplatin", "Methotrexate"]], ["What is oxaliplatin's dose-limiting toxicity?", "Nerve damage (peripheral neuropathy), possibly irreversible with chronic use", ["Severe nephrotoxicity", "Cardiotoxicity", "Hepatotoxicity"]], ["Nedaplatin's leaving group, in contrast to carboplatin's, is...", "the dianionic form of glycolic acid", ["an oxalate dianion", "a chloride ion", "a DACH ligand"]], ["Nedaplatin is approved for clinical use in which country?", "Japan", ["The United States", "Germany", "China"]], ["Lobaplatin and heptaplatin share which side effects?", "Myelosuppression and mild hepatotoxicity", ["Peripheral neuropathy and ototoxicity", "Cardiotoxicity and alopecia", "Nephrotoxicity and pulmonary fibrosis"]], ["What oxidation state is satraplatin, and how is it typically given?", "A Pt(IV) complex, given orally", ["A Pt(II) complex, given orally", "A Pt(IV) complex, given only by IV infusion", "A Pt(0) complex, given topically"]], ["Why is satraplatin given orally rather than intravenously?", "It is more hydrophobic than cisplatin, making oral dosing more convenient", ["It is unstable in blood plasma", "It cannot cross cell membranes otherwise", "It requires first-pass liver activation"]], ["What was the outcome of satraplatin's phase III prostate cancer trials?", "Results were encouraging, but survival didn't improve enough for FDA fast-track approval", ["It received full FDA approval immediately", "The trial was stopped for severe toxicity", "It showed no anticancer activity at all"]], ["Which two platinum drugs are the only 2nd- and 3rd-generation drugs registered worldwide to date?", "Carboplatin and oxaliplatin", ["Nedaplatin and lobaplatin", "Satraplatin and heptaplatin", "Cisplatin and carboplatin"]], ["What common problems have hampered the development of new platinum drugs?", "Low efficacy, high toxicity, and poor aqueous solubility", ["Excessive manufacturing cost only", "Lack of any anticancer activity", "Instability at room temperature only"]], ["What ratio of HNO3 to HCl makes aqua regia?", "1:3", ["3:1", "1:1", "2:1"]], ["What is the d-electron count of Pt(II)?", "d8", ["d6", "d10", "d4"]], ["How many NH3 ligands does cisplatin have?", "Two", ["One", "Three", "Four"]], ["How many Cl ligands does cisplatin have?", "Two", ["One", "Three", "Zero"]], ["Cisplatin's other common name is?", "Cisplatinum", ["Cisoxaplatin", "Platinol acid", "Diaminoplatinate"]], ["What administration route is typical for oxaliplatin?", "Intravenous infusion", ["Oral tablet", "Subcutaneous injection", "Topical application"]], ["What administration route is typical for nedaplatin?", "IV injection", ["Oral capsule", "Intramuscular injection", "Inhalation"]], ["What administration route is typical for satraplatin?", "Oral", ["Intravenous", "Intramuscular", "Topical"]], ["Which country approved lobaplatin for non-small-cell lung cancer and breast cancer?", "Japan", ["China", "USA", "Germany"]], ["Which country is heptaplatin used in for gastric cancer?", "South Korea", ["Japan", "China", "India"]], ["Carboplatin's dose is based on which two factors?", "Body surface area or renal function", ["Age and weight only", "Liver function only", "Blood type"]], ["Which cancers does oxaliplatin's typical combination treat?", "Metastatic colon or rectal carcinoma", ["Breast cancer", "Lung cancer", "Leukemia"]], ["What is the trade name of oxaliplatin?", "Eloxatin®", ["Paraplatin®", "Platinol®", "Oxaplat®"]], ["Cisplatin's molecular character is best described as...", "Neutral, purely inorganic, yellow powder", ["Charged organic red crystal", "Neutral organic white powder", "Charged inorganic blue liquid"]], ["Satraplatin's phase III trials mainly targeted which cancer?", "Hormone-refractory prostate cancer", ["Ovarian cancer", "Leukemia", "Melanoma"]], ["Which drug was combined with satraplatin in its phase III trials?", "Prednisone", ["Leucovorin", "5-fluorouracil", "Dexamethasone"]]];
+const quizL2 = [["Why are Zn, Cd, and Hg excluded from the transition metals despite being d-block elements?", "Their d subshell (d10) is always complete, even as cations", ["They belong to group 13, not group 12", "They are radioactive", "They only form anions"]], ["Why does platinum require aqua regia rather than nitric acid alone to dissolve?", "Chloride ions complex the oxidized Pt center while HNO3 oxidizes it, driving dissolution", ["Platinum is soluble in any strong acid at room temperature", "HCl alone is a strong enough oxidizer for Pt", "Aqua regia lowers the melting point of platinum"]], ["Why is Pt(II) specifically described as adopting a square planar geometry?", "Because it has a d8 electron configuration", ["Because it has a d10 electron configuration", "Because it is always six-coordinate", "Because platinum has no d electrons"]], ["Why are ammonia ligands in cisplatin considered \"nonleaving\" while chloride ligands are labile?", "Ammonia binds more strongly to Pt(II) than chloride, which is more easily displaced by nucleophiles", ["Ammonia is negatively charged and chloride is neutral", "Chloride is a stronger field ligand than ammonia in this complex", "Ammonia cannot bind platinum at all"]], ["Why must the second NH3 added during cisplatin synthesis end up cis to the first?", "The first substitution is nondirectional (all 4 positions equivalent), but the second is directed cis to the first NH3", ["Trans addition is thermodynamically impossible for platinum complexes", "The chloride ligands force a trans arrangement", "NH3 always binds trans to another NH3"]], ["Why does high extracellular chloride concentration (>100 mM) keep cisplatin stable in blood?", "It shifts the Pt-Cl hydrolysis equilibrium toward the intact chloride form", ["It denatures the enzymes that would otherwise degrade cisplatin", "It binds and permanently inactivates platinum", "It raises blood pH, stabilizing cisplatin"]], ["Why does cisplatin hydrolyze specifically inside the cell rather than in the bloodstream?", "Intracellular chloride concentration (~4 mM) is far lower than extracellular, shifting the equilibrium toward aquation", ["Cells actively pump chloride into cisplatin molecules", "Intracellular pH destroys the chloride ligands", "Cisplatin cannot enter cells until hydrolyzed"]], ["Why are the mono- and diaqua cisplatin species considered \"electrophilic\"?", "Water is a good leaving group, making these aquated species highly reactive toward nucleophiles like DNA and thiols", ["They carry a strong negative charge that repels DNA", "They are neutral and therefore unreactive", "They contain no platinum center"]], ["Why does cisplatin preferentially bind N7 of guanine over other DNA positions?", "N7-guanine is nucleophilic and accessible in the major groove, not involved in base pairing", ["N7-guanine is the only nitrogen atom in DNA", "Guanine is the most abundant base in human DNA", "N7-guanine carries a permanent negative charge that attracts Pt"]], ["Why is mitochondrial DNA binding considered less important for cisplatin's antitumor effect than nuclear DNA binding?", "The therapeutic (apoptosis-inducing) mechanism is attributed mainly to nuclear DNA adduct formation", ["Mitochondria lack DNA entirely", "Cisplatin cannot physically reach mitochondria", "Mitochondrial DNA is chemically inert to platinum"]], ["Why can't cisplatin's dose simply be increased to overcome tumor resistance?", "Its narrow therapeutic window makes higher doses unacceptably toxic", ["Higher doses make cisplatin chemically unstable", "Regulatory agencies cap all chemotherapy doses uniformly", "Cisplatin loses its structure above a certain dose"]], ["How do \"decreased drug entry\" and \"increased drug efflux\" both contribute to cisplatin resistance?", "Both lower the net intracellular concentration of active platinum available to bind DNA", ["Both increase DNA repair enzyme activity directly", "Both convert cisplatin into an inactive isomer", "Both block apoptosis signaling independent of platinum levels"]], ["Why do cisplatin's classic toxicities (nephrotoxicity, ototoxicity, peripheral neuropathy) occur despite its DNA-targeted mechanism?", "Platinum species are not tumor-selective and can react with DNA/proteins in kidney, ear, and nerve tissue too", ["These toxicities are caused by an unrelated non-platinum contaminant", "Only oral platinum drugs cause these toxicities", "These effects only occur without ammonia ligands"]], ["What structural change converts cisplatin into carboplatin?", "The two labile chloride ligands are replaced by a bidentate chelating (cbdca) ligand", ["The ammonia ligands are replaced by chloride", "A DACH ligand replaces the ammonia groups", "Platinum is oxidized from Pt(II) to Pt(IV)"]], ["Why is carboplatin less nephrotoxic/ototoxic than cisplatin, yet more myelosuppressive?", "Its lower reactivity spares kidney/ear tissue, but requires much higher doses that more strongly suppress bone marrow", ["Carboplatin doesn't contain platinum, so it can't damage kidneys", "Carboplatin is metabolized exclusively in bone marrow", "Myelosuppression is unrelated to dose for any platinum drug"]], ["Why must carboplatin typically be dosed 3-6x higher than cisplatin?", "Its lower reactivity (due to the stable chelating leaving group) makes it less potent per mole", ["Carboplatin is rapidly excreted before it can act", "Carboplatin has a shorter half-life requiring repeated dosing", "Carboplatin binds irreversibly to plasma proteins, reducing bioavailability"]], ["Why is carboplatin described as a \"prodrug\"?", "It has low reactivity until hydrolysis opens its chelate ring, activating the platinum center", ["It is chemically identical to cisplatin until metabolized by the liver", "It must be converted to Pt(IV) before activity", "It is inactive until bound to plasma albumin"]], ["How does oxaliplatin's ligand set differ from cisplatin's?", "Chloride leaving groups are replaced by oxalato, and ammonia nonleaving groups are replaced by DACH", ["Both ligand types are identical to cisplatin's", "Oxaliplatin has no leaving group at all", "Oxaliplatin replaces platinum with palladium"]], ["Why do cisplatin and carboplatin hydrolyze to a similar diamino-platinum species, while oxaliplatin does not?", "Oxaliplatin's hydrolysis product retains the bulky, nonleaving DACH ligand instead of small ammonia groups", ["Oxaliplatin doesn't undergo hydrolysis at all", "Cisplatin and carboplatin don't actually hydrolyze", "Oxaliplatin loses its platinum center upon hydrolysis"]], ["Why does oxaliplatin's bulky DACH-adduct make it especially effective against colon cancer?", "It sterically hinders DNA mismatch repair enzymes, which are particularly active in colon cancer cells", ["DACH is selectively absorbed by colon tissue", "Colon cancer cells lack DNA entirely", "Oxaliplatin only circulates through the colon"]], ["Why is oxaliplatin typically combined with 5-fluorouracil and leucovorin?", "This combination is most effective for treating metastatic colorectal carcinomas", ["5-FU prevents oxaliplatin's dose-limiting neurotoxicity entirely", "Leucovorin is required to chemically activate oxaliplatin", "This combination is only used for prostate cancer"]], ["Why does oxaliplatin cause a distinct dose-limiting toxicity (nerve damage) rather than cisplatin's classic nephro-/ototoxicity?", "Its different hydrolysis chemistry and DACH ligand alter its tissue reactivity and distribution profile", ["Oxaliplatin cannot reach the kidneys or ears at all", "Nerve damage occurs only with oral platinum drugs", "Oxaliplatin is chemically identical to cisplatin in the body"]], ["How does nedaplatin's leaving group differ from carboplatin's?", "Nedaplatin uses the dianionic form of glycolic acid, while carboplatin uses the cbdca chelate", ["Nedaplatin has no leaving group", "Carboplatin uses DACH as its leaving group", "Nedaplatin's leaving group is chloride, identical to cisplatin's"]], ["Why might nedaplatin's dose-limiting myelosuppression be expected, given its similarity to carboplatin?", "It shares carboplatin's general design of a Pt(II) center with cis-ammonia and a chelating leaving group", ["Myelosuppression is unrelated to any structural similarity between platinum drugs", "Nedaplatin is not actually similar to carboplatin in any way", "Myelosuppression only occurs with orally administered drugs"]], ["Why have lobaplatin and heptaplatin achieved only limited global clinical success?", "Despite regional approval, they show myelosuppression and mild hepatotoxicity and lack EU/FDA approval", ["They have never been tested in any clinical trial", "They are more effective than cisplatin but too expensive to produce", "They cannot be administered to humans due to instability"]], ["Why is satraplatin's oral administration considered advantageous over IV platinum drugs?", "Its greater hydrophobicity (compared with cisplatin) allows oral absorption and more convenient dosing", ["Oral drugs are always more effective than IV drugs", "Satraplatin cannot be given intravenously under any circumstances", "Oral dosing avoids all forms of platinum toxicity"]], ["Why does satraplatin show no cross-resistance with cisplatin?", "As a structurally distinct Pt(IV) complex requiring in vivo activation, it isn't affected by the same resistance mechanisms that limit cisplatin", ["Satraplatin does not contain platinum", "Cisplatin resistance mechanisms have never been characterized", "Satraplatin is inactive against all tumor types, so resistance is irrelevant"]], ["Why did satraplatin fail to receive FDA fast-track approval despite encouraging phase III results?", "The overall survival rate did not improve significantly enough", ["The FDA banned all Pt(IV) complexes", "The trial showed no anticancer activity whatsoever", "Prednisone was found to be toxic when combined with satraplatin"]], ["What common problem links nedaplatin, lobaplatin, heptaplatin, and satraplatin's limited worldwide approval?", "Low efficacy, high toxicity, and poor aqueous solubility — common issues for transition-metal-based compounds", ["They are all radioactive", "They were never tested for anticancer activity", "They are chemically identical to cisplatin, offering no advantage"]], ["Why are carboplatin and oxaliplatin singled out as the only successful 2nd/3rd-generation platinum drugs registered worldwide?", "Unlike most other candidates, which achieved only regional approval or failed, they gained broad global clinical acceptance", ["They are the only platinum drugs that exist", "They were the first platinum drugs ever discovered", "They are administered orally, unlike all other platinum drugs"]], ["How does the \"leaving group vs. nonleaving group\" concept explain the differing profiles of cisplatin, carboplatin, and oxaliplatin?", "The nonleaving ligand sets DNA-binding geometry, while the leaving group controls activation kinetics, shaping efficacy, resistance, and toxicity", ["Only the leaving group matters; the nonleaving ligand has no biological role", "Only the nonleaving ligand matters; leaving groups are interchangeable without effect", "Neither ligand type affects the drug's biological activity"]], ["Why does carboplatin tolerate a higher dose than cisplatin without proportionally higher classic toxicity?", "Its wider therapeutic window (due to lower reactivity) allows higher doses before reaching toxic thresholds", ["Carboplatin doesn't accumulate in the body at all", "Carboplatin's dose has no relationship to its toxicity", "Cisplatin's therapeutic window is wider than carboplatin's"]], ["Why is Group 10 chemistry (favoring +II, d8, square planar Pt) relevant background for understanding platinum anticancer drugs?", "This is exactly the structural basis exploited in cisplatin, carboplatin, and oxaliplatin", ["Platinum anticancer drugs use Pt(0), unrelated to Group 10 trends", "Group 10 chemistry only applies to industrial catalysis, not medicine", "Anticancer platinum drugs use tetrahedral geometry, not square planar"]], ["Why do carrier proteins like copper transporters assist cisplatin's cellular uptake?", "Cisplatin's ionic/structural similarity allows it to be recognized by transporters normally used for other cations", ["Cisplatin actually contains copper atoms", "Copper transporters exclusively transport chloride ions", "Cisplatin cannot enter cells by any transporter-mediated route"]], ["Why is DNA cross-linking, rather than simple DNA binding, key to cisplatin's cytotoxicity?", "Cross-linking distorts the helix and blocks replication/transcription, triggering apoptosis", ["Simple binding alone always kills the cell instantly", "Cross-linking prevents DNA from existing in the nucleus", "DNA binding and cross-linking are the same process with no functional difference"]], ["What general drug-design principle do cisplatin → carboplatin → oxaliplatin illustrate?", "Replacing labile ligands with more stable chelating ligands reduces off-target reactivity/toxicity, with trade-offs in dose or resistance profile", ["Later-generation drugs always contain less platinum than earlier ones", "Each generation removes platinum entirely from the structure", "Later drugs are always less effective than earlier ones"]], ["Why is Pd more useful than Pt specifically for H2/D2/T2 separation and purification?", "Pd's favorable reactivity and d-electron configuration make it well-suited to absorbing and diffusing hydrogen isotopes", ["Platinum cannot form any bonds with hydrogen", "Pd is radioactive, making it ideal for isotope work", "Pt is used for this application instead of Pd"]], ["What does \"prodrug\" mean specifically for carboplatin, and why does this matter clinically?", "It is given in a low-reactivity form that must be metabolically activated to become cytotoxic, contributing to improved tolerability", ["It means carboplatin has no anticancer effect under any condition", "It means carboplatin is only active when combined with cisplatin", "It means carboplatin must be converted into oxaliplatin to work"]], ["Why does the passage note that cisplatin's precise mechanism is \"still under investigation\" despite decades of clinical use?", "Although DNA adduct formation is the leading explanation, the full mechanistic details of how this causes cell death aren't fully resolved", ["Cisplatin's mechanism was only recently discovered and has never been studied", "Scientists believe cisplatin has no defined mechanism at all", "The mechanism is fully solved and requires no further research"]], ["What unifying theme connects Group 10 chemistry, cisplatin's discovery, and later platinum drugs?", "Platinum's +II, d8, square-planar coordination chemistry being progressively refined through ligand substitution to balance efficacy against toxicity/resistance", ["All platinum drugs share an identical chemical structure with no variation", "Later drugs abandon platinum's characteristic oxidation state entirely", "Group 10 chemistry is unrelated to any anticancer drug design"]], ["Why does platinum resist O2, F2, and Cl2 attack except at very high temperature, relating this to its anticancer complexes' stability requirements?", "Both reflect the kinetic/thermodynamic inertness exploited until a specific triggering condition unlocks reactivity", ["Platinum metal and platinum anticancer drugs share no common stability principle", "Platinum drugs are chemically unstable at all times, unlike the metal", "High temperature is required to activate cisplatin in the body"]], ["Why would you predict better relative efficacy from oxaliplatin (vs cisplatin) in a tumor with enhanced DNA repair as its dominant resistance mechanism?", "Oxaliplatin's bulky adduct specifically impairs the repair pathway itself, potentially circumventing that resistance mechanism", ["Oxaliplatin cannot bind DNA at all, so DNA repair is irrelevant to it", "Enhanced DNA repair always increases oxaliplatin's toxicity, not its efficacy", "Oxaliplatin and cisplatin behave identically regardless of DNA repair status"]], ["Why does the passage distinguish \"acquired cisplatin resistance\" from \"demand for broad-spectrum anticancer agents\" as separate drivers for developing new platinum drugs?", "One concerns durability of response in cancers initially responsive to cisplatin; the other concerns extending platinum therapy to cancer types cisplatin doesn't treat effectively", ["These two phrases describe exactly the same clinical problem", "Acquired resistance refers only to viral resistance, unrelated to cancer", "Broad-spectrum demand refers only to antibiotic development, not oncology"]], ["Why would oxaliplatin retain efficacy in colorectal tumors with fully functional (not overwhelmed) mismatch repair machinery?", "Its steric bulk is exactly what impairs the repair machinery's ability to process the adduct, so intact MMR doesn't eliminate this advantage", ["Oxaliplatin only works when mismatch repair is completely absent", "Oxaliplatin's mechanism has nothing to do with DNA repair", "Fully functional MMR always neutralizes oxaliplatin's effect entirely"]], ["Which platinum drug best exemplifies \"reduced reactivity improves tolerability at the cost of requiring activation,\" based on explicit evidence in the passage?", "Carboplatin, explicitly described as a prodrug with low reactivity until hydrolysis/ring-opening", ["Cisplatin, which is directly reactive with no activation step", "Satraplatin, which requires no biotransformation at all", "Oxaliplatin, which the passage describes as immediately reactive with no hydrolysis step"]], ["How does ligand lability generally predict a platinum drug's toxicity and dosing profile, based on the overall passage?", "Highly labile ligands (like Cl) increase reactivity/toxicity and lower required dose; more stable chelating ligands reduce toxicity but require higher doses", ["Ligand lability has no relationship to toxicity or dosing", "More labile ligands always require higher doses", "Chelating ligands always increase toxicity relative to chloride"]], ["Why does a bulky nonleaving ligand like DACH change a platinum drug's tumor-type selectivity, according to the passage's logic?", "It alters the nature of the DNA adduct, enabling evasion of specific repair pathways relevant to certain tumor types", ["Bulky ligands prevent the drug from binding DNA at all", "Bulky nonleaving ligands only affect a drug's color, not its biology", "Tumor-type selectivity is unrelated to ligand structure"]], ["Why would poor aqueous solubility be a particular liability for an oral platinum drug like satraplatin compared to an IV drug like cisplatin?", "An oral drug must dissolve in GI fluids and be absorbed across the gut, so poor solubility directly limits its bioavailability", ["IV drugs are equally affected by poor aqueous solubility as oral drugs", "Solubility is irrelevant to any drug's absorption", "Satraplatin is delivered directly into the bloodstream, bypassing solubility concerns"]], ["Why does the passage's description of \"intrastrand\" binding favor a cis- rather than trans-diammineplatinum geometry?", "Only the cis arrangement positions both labile sites close enough to simultaneously reach two adjacent bases on the same DNA strand", ["Trans geometry binds DNA more effectively than cis geometry", "Cis and trans isomers behave identically toward DNA", "Trans-diammineplatinum is the active form used clinically"]], ["Why does reduced platinum reactivity connect to both reduced toxicity and the need for a higher dose?", "Lower reactivity means fewer molecules bind DNA per dose (reducing both off-target toxicity and on-target efficacy), requiring a higher dose to restore comparable efficacy", ["Reduced reactivity always increases toxicity, requiring a lower dose", "Dose requirements are unrelated to a drug's chemical reactivity", "Lower reactivity has no effect on either toxicity or efficacy"]]];
+const quizL3 = [["A tumor has upregulated DNA mismatch repair (MMR) activity. Which platinum drug would you predict is LEAST effective, and why?", "Cisplatin, because its smaller aquated adducts are more easily recognized and repaired by intact MMR machinery", ["Oxaliplatin, because DACH ligands are toxic to MMR-active cells", "Carboplatin, because it cannot enter MMR-active cells", "All platinum drugs would be equally effective regardless of MMR status"]], ["Mechanistically, why does cisplatin remain inert in blood but reactive in the cytosol, in terms of chemical equilibrium?", "The reversible Pt-Cl hydrolysis equilibrium shifts toward the aquated form as chloride drops from ~100 mM (blood) to ~4 mM (cytosol)", ["Cisplatin is enzymatically activated only inside cells by a dedicated activating enzyme", "Blood pH is too high for hydrolysis, unlike cytosolic pH", "Cisplatin's chloride ligands are covalently locked and cannot exchange at all"]], ["A patient develops severe myelosuppression on carboplatin despite tolerating cisplatin well. How is this best reconciled with carboplatin's \"better\" toxicity profile?", "Carboplatin's improved profile applies to nephro-/ototoxicity specifically; its required higher dose shifts toxicity toward the bone marrow rather than eliminating toxicity altogether", ["This indicates a diagnostic error, since carboplatin cannot cause myelosuppression", "Carboplatin is inherently more toxic than cisplatin in every respect", "Myelosuppression only occurs with drugs given orally"]], ["Comparing the ligand pairs of cisplatin, carboplatin, and oxaliplatin, what best explains oxaliplatin's distinct clinical niche in colorectal cancer?", "Its bulky DACH nonleaving ligand creates adducts that sterically evade DNA mismatch repair, which is especially active in colorectal tumors", ["Its leaving group (oxalato) is selectively toxic to colon tissue", "Oxaliplatin lacks any nonleaving ligand, unlike the other two drugs", "Its ammonia nonleaving groups target colon-specific receptors"]], ["Why does satraplatin, a Pt(IV) complex, need in vivo reduction to become active, and how does this relate to its oral use?", "Pt(IV) is substitution-inert, letting it survive the GI tract intact; its greater lipophilicity aids absorption, and it's later reduced to active Pt(II) in tissue", ["Pt(IV) is more reactive than Pt(II), requiring reduction to prevent overdose", "Satraplatin is never reduced; it acts directly as Pt(IV) on DNA", "Oral administration destroys Pt(IV), converting it directly to Pt(0)"]], ["If a new platinum drug used a bidentate leaving group even more inert than cbdca, what would you predict about its dosing and toxicity relative to carboplatin?", "It would likely require an even higher dose (slower activation) with reduced acute nephro-/ototoxicity, but possible increased myelosuppression", ["It would require a lower dose than cisplatin due to increased potency", "It would show no toxicity of any kind due to its inertness", "Its toxicity and dosing would be identical to cisplatin's"]], ["Why is square planar Pt(II) geometry, rather than octahedral Pt(IV) or tetrahedral geometry, specifically exploited for DNA cross-linking?", "The d8 square planar center provides two cis-accessible coordination sites that can simultaneously bind two adjacent DNA bases", ["Octahedral Pt(IV) binds DNA more efficiently than square planar Pt(II)", "Tetrahedral geometry allows binding to four DNA bases at once, which is preferred", "Square planar geometry prevents any DNA binding, which is why it's chosen"]], ["What is the correct causal chain from cisplatin's N7-guanine binding to apoptosis?", "Pt binds N7 of two adjacent guanines → helix distortion/replication blockage → damage-response activation → apoptosis", ["Pt binds DNA → DNA is instantly degraded → cell lyses immediately, bypassing apoptosis", "Pt binds RNA, not DNA → protein synthesis stops → necrosis occurs", "Pt binds the cell membrane → osmotic imbalance → apoptosis"]], ["To improve oxaliplatin's neurotoxicity without losing colorectal efficacy, which structural feature must be preserved?", "The bulky DACH nonleaving ligand, since it is responsible for the mismatch-repair-evading efficacy", ["The oxalato leaving group must be enlarged, not the DACH ligand", "All chelating ligands must be removed entirely", "The ammonia ligands, which are unique to oxaliplatin"]], ["Why are \"low efficacy, high toxicity, poor aqueous solubility\" described as problems common to transition-metal-based compounds generally, not just platinum?", "Transition metals' variable oxidation states/ligand exchange chemistry that enables biological reactivity also predisposes to off-target binding, poor permeability, and low solubility", ["These problems are unique to platinum and do not apply to any other transition metal", "These problems only affect radioactive transition metals", "Transition metals are inherently non-reactive, causing these issues"]], ["Why does satraplatin show no cross-resistance with cisplatin, contrasted with cisplatin's known resistance mechanisms?", "As a structurally distinct Pt(IV) complex needing a different activation pathway, it likely evades the entry/efflux/repair mechanisms that specifically target cisplatin's Pt(II) chemistry", ["Cisplatin resistance mechanisms have never been shown to exist", "Satraplatin and cisplatin share identical resistance profiles", "Satraplatin is inactive against all cancer cells, making cross-resistance moot"]], ["In an MMR-deficient tumor, how would you expect oxaliplatin's relative advantage over cisplatin to change?", "The advantage would likely narrow, since oxaliplatin's edge comes specifically from blocking active MMR machinery, which an MMR-deficient cell lacks", ["The advantage would dramatically increase, since MMR deficiency always potentiates oxaliplatin uniquely", "Oxaliplatin would become completely inactive in MMR-deficient tumors", "There would be no change, since MMR status is irrelevant to any platinum drug"]], ["Why is Pt's actual configuration ([Xe]4f14 5d9 6s1) considered anomalous relative to a simple Aufbau prediction of [Xe]4f14 5d8 6s2?", "A small 5d-6s energy gap and relativistic stabilization of 5d favor promoting one 6s electron into 5d for extra exchange stabilization", ["Platinum actually follows the Aufbau principle exactly, with no anomaly", "The anomaly arises because platinum has no 6s orbital", "Relativistic effects only affect the 4f orbitals, not 5d or 6s"]], ["Why couldn't a hypothetical Pt(0) complex replicate cisplatin's DNA cross-linking mechanism?", "Only the d8, +2 square planar state provides the correct cis-labile coordination sites and electrophilicity needed for ligand substitution with DNA nucleophiles", ["Pt(0) complexes are always more reactive toward DNA than Pt(II) complexes", "Pt(0) has the same square planar geometry and would work identically", "DNA cannot interact with any oxidation state of platinum except Pt(IV)"]], ["Categorizing carboplatin's and oxaliplatin's primary design goals (reduce toxicity vs. overcome resistance/expand indications), which is most accurate?", "Carboplatin primarily reduces toxicity via a more stable leaving group; oxaliplatin primarily overcomes resistance/expands indications via its bulky DACH ligand", ["Both drugs were designed exclusively to reduce toxicity, with no efficacy considerations", "Both drugs were designed exclusively to expand indications, with no toxicity considerations", "Carboplatin expands indications while oxaliplatin reduces toxicity — the reverse of correct"]], ["How does the concept of a \"narrow therapeutic window\" differently constrain dosing strategy for cisplatin versus carboplatin?", "Cisplatin's narrow window prevents dose escalation to overcome resistance; carboplatin's wider window allows 3-6x higher doses to be used safely", ["Both drugs have identical, equally narrow therapeutic windows", "Carboplatin has a narrower window than cisplatin, preventing any dose increase", "Therapeutic window has no bearing on dosing strategy for either drug"]], ["For a next-generation platinum drug designed only to increase membrane permeability (drug entry) without altering DNA-binding chemistry, which resistance mechanism would most directly undermine it?", "Enhanced DNA repair and increased drug efflux, since improved entry alone doesn't prevent adduct repair or pump-mediated removal", ["Decreased drug entry, since that mechanism would no longer be relevant", "No resistance mechanism could affect such a drug", "Only nephrotoxicity would undermine such a drug, not resistance"]], ["Why is chloride specifically necessary to dissolve platinum in aqua regia, but not necessary for palladium in hot oxidizing acids?", "Platinum's higher noble character requires Cl- to complex the oxidized Pt center in addition to oxidation by HNO3; palladium's lower reduction potential allows oxidation alone to suffice", ["Chloride is required for both metals equally, with no difference between them", "Palladium requires chloride, but platinum does not", "Platinum has no chloride affinity, making aqua regia irrelevant to its dissolution"]], ["What does cisplatin's selectivity for N7-guanine (major groove, non-base-pairing) over base-pairing positions suggest about how it causes cytotoxicity?", "It can covalently modify DNA without directly breaking Watson-Crick hydrogen bonds; cytotoxicity instead arises from cross-linking-induced helix distortion", ["It directly breaks hydrogen bonds between base pairs, which is the sole cause of cytotoxicity", "N7-guanine binding has no effect on DNA structure at all", "Cisplatin avoids DNA entirely and acts only on RNA"]], ["What does satraplatin's failure to gain FDA fast-track approval — despite milder toxicity and no cross-resistance with cisplatin — reveal about drug approval criteria?", "Improved tolerability and lack of cross-resistance alone are insufficient; regulators require a statistically significant improvement in a hard endpoint like overall survival", ["It reveals that the FDA only approves intravenous platinum drugs", "It reveals that satraplatin showed no anticancer activity at all", "It reveals that oral drugs are never eligible for any FDA approval pathway"]], ["Why can platinum drugs in this class require completely different administration routes (IV for cisplatin/carboplatin/oxaliplatin/nedaplatin vs. oral for satraplatin) based purely on ligand chemistry?", "Pt(II) complexes with small polar/labile ligands are hydrophilic/reactive, suited to IV use; satraplatin's more lipophilic, substitution-inert Pt(IV) structure survives the GI tract and permeates membranes, enabling oral dosing", ["Route of administration is determined solely by tumor location, not drug chemistry", "All platinum(II) complexes are inherently suited to oral dosing", "Satraplatin's route is arbitrary and unrelated to its chemical structure"]], ["In a tumor whose dominant cisplatin-resistance mechanism is enhanced DNA repair, would oxaliplatin likely show better or worse relative efficacy, and why?", "Likely better, because oxaliplatin's bulky adduct specifically impairs the repair pathway that confers this resistance", ["Likely worse, because oxaliplatin relies entirely on functional DNA repair for its own activity", "No difference, since DNA repair mechanisms don't affect any platinum drug", "Oxaliplatin would become completely inactive under these conditions"]], ["Given that Group 10 elements favor +II, but platinum also forms Pt(IV) drugs like satraplatin, what is the key trade-off between Pt(II) and Pt(IV) anticancer agents?", "Pt(II) is directly reactive (faster action, broader toxicity, IV-only); Pt(IV) is a substitution-inert prodrug (needs reduction, but offers oral bioavailability and a different toxicity/resistance profile)", ["Pt(II) requires reduction to become active, while Pt(IV) acts directly", "Pt(IV) drugs are always less effective than Pt(II) drugs regardless of context", "There is no meaningful difference between Pt(II) and Pt(IV) anticancer chemistry"]], ["What is the one key structural difference that distinguishes nedaplatin from carboplatin, despite their overall similarity?", "The leaving group — carboplatin uses the cbdca chelate, nedaplatin uses the dianionic form of glycolic acid", ["Nedaplatin has no platinum center, unlike carboplatin", "Carboplatin uses ammonia as its leaving group, while nedaplatin does not", "Nedaplatin is a Pt(IV) complex, while carboplatin is Pt(II)"]], ["What does nedaplatin sharing carboplatin-like dose-limiting myelosuppression suggest about their respective activation chemistries?", "Despite a different leaving group, both share a \"prodrug-like,\" delayed-reactivity design that shifts toxicity toward the bone marrow rather than kidneys/ears", ["It suggests the two drugs are chemically unrelated and the shared toxicity is coincidental", "It suggests nedaplatin is more reactive than cisplatin, unlike carboplatin", "It suggests myelosuppression is caused only by the ammonia ligands, unrelated to the leaving group"]], ["What does the fact that cisplatin and carboplatin hydrolyze to \"a common diamino-platinum species\" imply about their resistance profiles?", "Resistance mechanisms targeting this shared reactive species likely confer cross-resistance between cisplatin and carboplatin, unlike oxaliplatin's distinct DACH adduct", ["It implies cisplatin and carboplatin have completely independent, non-overlapping resistance profiles", "It implies carboplatin cannot be deactivated by any resistance mechanism", "It implies oxaliplatin shares this same hydrolysis product"]], ["Why wouldn't oxaliplatin's colorectal cancer efficacy be expected to overlap much with cisplatin's classic indications (ovarian, testicular, bladder, head & neck)?", "Oxaliplatin's efficacy depends on high baseline mismatch-repair activity, a tissue-specific vulnerability not shared by cisplatin's classic target tissues", ["Cisplatin and oxaliplatin target completely different DNA bases, unrelated to tissue type", "Oxaliplatin cannot enter any tissue except the colon", "Cisplatin's classic indications are also mismatch-repair-dependent, identical to oxaliplatin's"]], ["For a hypothetical drug with an even more labile leaving group than chloride, what would you predict about its toxicity and required dose relative to cisplatin and carboplatin?", "Likely similar or greater toxicity than cisplatin (due to high reactivity) and a lower required dose than carboplatin (due to higher potency per molecule)", ["It would be completely non-toxic due to its high reactivity", "It would require an even higher dose than carboplatin", "High lability would make the drug chemically inert, eliminating any anticancer effect"]], ["What is the mechanistic parallel between platinum metal's resistance to O2/F2/Cl2 attack and Pt(IV) drugs' substitution inertness?", "Both reflect kinetic/thermodynamic stability exploited until a specific triggering condition (high temperature; in vivo reduction) unlocks reactivity", ["There is no meaningful parallel; metallic and complex-level stability are unrelated phenomena", "Both properties make platinum completely unreactive under all circumstances, with no trigger", "High temperature is what activates Pt(IV) drugs in the body"]], ["Synthesizing the drug-design arc cisplatin → carboplatin → oxaliplatin → satraplatin, which problem did EACH successive drug primarily address?", "Carboplatin addressed toxicity; oxaliplatin addressed resistance/tumor-type limitations; satraplatin addressed administration convenience (though it fell short on survival benefit)", ["Each successive drug addressed exactly the same problem — reducing cost of production", "Carboplatin addressed tumor-type limitations, oxaliplatin addressed toxicity, and satraplatin addressed resistance — the reverse of correct order", "None of the successive drugs addressed any limitation of cisplatin"]], ["Why would poor aqueous solubility be a particular liability for satraplatin (oral) but less critical for cisplatin (IV)?", "An oral drug must dissolve in GI fluids and be absorbed across the gut, while an IV drug bypasses this dissolution/absorption step", ["Poor solubility affects IV drugs more severely than oral drugs, the reverse of the correct relationship", "Solubility is irrelevant to bioavailability for any route of administration", "Satraplatin's solubility issue is unrelated to its route of administration"]], ["What shared underlying chemical property explains why palladium is used both for H2/D2/T2 separation and for hydrogenation catalysis?", "Its ability to absorb hydrogen (and isotopes) into its lattice and activate H-H bonds at its surface", ["Its resistance to all forms of chemical bonding with hydrogen", "Its radioactivity, which selectively binds heavier hydrogen isotopes", "Its inability to form any compounds with nonmetals"]], ["How does Pd's Group 10 redox flexibility (Pd(II)/Pd(0) cycling) relate to its role as the Wacker process catalyst?", "This redox cycling allows Pd to coordinate ethylene, facilitate its oxidative transformation to acetaldehyde, and regenerate the active catalyst", ["Pd's redox flexibility has no connection to the Wacker process, which relies purely on temperature", "The Wacker process requires Pd to remain permanently in the Pd(0) state", "Ethylene oxidation in the Wacker process does not involve any change in palladium's oxidation state"]], ["If a tumor overexpresses organic cation transporters, what would you predict about cisplatin uptake and cytotoxicity?", "Increased uptake and enhanced cytotoxicity, since these transporters facilitate cisplatin's active/facilitated cellular entry", ["Decreased uptake, since organic cation transporters specifically exclude cisplatin", "No effect, since cisplatin only enters cells by passive diffusion", "Complete resistance to cisplatin, since these transporters actively pump cisplatin out"]], ["Why does intrastrand (adjacent-base) cross-linking favor a cis- rather than trans-diammineplatinum geometry?", "Only the cis arrangement places both labile leaving-group sites close enough to simultaneously reach two adjacent bases on the same DNA strand", ["Trans geometry is actually preferred for intrastrand cross-linking, contrary to the cis requirement", "Intrastrand cross-linking does not depend on cis/trans geometry at all", "Trans-diamminedichloroplatinum(II) is the clinically active isomer, not cisplatin"]], ["What pharmacological logic connects carboplatin's reduced reactivity to both its reduced toxicity and its requirement for a higher dose?", "Lower reactivity means fewer molecules bind DNA per dose, reducing both off-target toxicity and on-target efficacy — requiring a higher dose to restore comparable efficacy", ["Reduced reactivity increases toxicity while decreasing the required dose, the opposite relationship", "Reactivity, toxicity, and dose have no logical relationship to one another", "Higher doses of carboplatin are needed because it is excreted instantly, unrelated to reactivity"]], ["Why does the passage distinguish \"acquired cisplatin resistance\" from \"demand for broad-spectrum anticancer agents\" as two separate drivers of new platinum drug development?", "One concerns durability of response in cancers initially treatable by cisplatin; the other concerns extending platinum therapy to cancer types cisplatin does not treat effectively", ["These phrases are synonyms describing the identical clinical problem", "Acquired resistance refers to resistance against antibiotics, unrelated to platinum drugs", "Broad-spectrum demand refers only to expanding cisplatin's dose range, not its cancer-type coverage"]], ["Based on its mechanism, would oxaliplatin retain efficacy in a colorectal tumor with fully intact (non-overwhelmed) mismatch repair machinery?", "Yes — its steric bulk is precisely what impairs the repair machinery's ability to process the adduct, so intact MMR does not eliminate this advantage", ["No — oxaliplatin only works when mismatch repair is completely absent from the tumor", "No — intact MMR always fully repairs and neutralizes any platinum-DNA adduct", "Yes, but only because oxaliplatin does not interact with DNA at all"]], ["Which platinum drug best exemplifies \"reduced reactivity improving tolerability at the cost of requiring biotransformation,\" and what specific textual evidence supports this?", "Carboplatin — explicitly described as a prodrug exhibiting low reactivity until activated via hydrolysis and chelate ring-opening", ["Cisplatin — described as immediately reactive with no activation step required", "Oxaliplatin — described as requiring no hydrolysis whatsoever", "Satraplatin — described as reactive prior to any metabolic change, unlike a prodrug"]], ["What general rule best predicts a platinum drug's balance of potency, toxicity, dosing, and tumor selectivity, based on ligand design principles from the passage?", "Highly labile leaving groups and small nonleaving groups produce potent but broadly toxic, low-dose drugs; stable chelating leaving groups reduce toxicity but need higher doses; bulky nonleaving groups change adduct chemistry, enabling repair-pathway evasion and new tumor-type efficacy", ["Ligand design has no predictable effect on any of these properties", "All platinum drugs converge on identical potency, toxicity, and dosing regardless of ligand structure", "Only the metal's oxidation state matters; ligand identity is irrelevant to drug behavior"]]];
+const quizLevels = {1:quizL1, 2:quizL2, 3:quizL3};
+let quizCurrentLevel = 1;
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]] = [arr[j],arr[i]];
+  }
+  return arr;
+}
+
+let score = 0, answered = 0;
+function renderQuiz(){
+  const quizRaw = quizLevels[quizCurrentLevel];
+  score = 0; answered = 0;
+  const list = document.getElementById('quiz-list');
+  list.innerHTML = '';
+  quizRaw.forEach((q,i)=>{
+    const [question, correct, wrongs] = q;
+    const opts = shuffle([correct, ...wrongs]);
+    const item = document.createElement('div');
+    item.className = 'q-item';
+    item.innerHTML = `
+      <div class="qn">Question ${i+1} of ${quizRaw.length}</div>
+      <div class="qtext">${question}</div>
+      <div class="q-opts"></div>`;
+    const optWrap = item.querySelector('.q-opts');
+    opts.forEach(optText=>{
+      const b = document.createElement('button');
+      b.className = 'q-opt';
+      b.textContent = optText;
+      b.addEventListener('click', ()=>{
+        const allOpts = optWrap.querySelectorAll('.q-opt');
+        if(allOpts[0].dataset.locked) return;
+        allOpts.forEach(o=>{
+          o.dataset.locked = "1";
+          o.disabled = true;
+          if(o.textContent === correct) o.classList.add('correct');
+        });
+        if(optText === correct){
+          b.classList.add('correct');
+          score++;
+        } else {
+          b.classList.add('wrong');
+        }
+        answered++;
+        updateScore();
+      });
+      optWrap.appendChild(b);
+    });
+    list.appendChild(item);
+  });
+  updateScore();
+}
+function updateScore(){
+  const quizRaw = quizLevels[quizCurrentLevel];
+  document.getElementById('quiz-score').textContent = score + ' / ' + quizRaw.length;
+}
+document.querySelectorAll('#quiz-level-row .chip').forEach(chip=>{
+  chip.addEventListener('click', ()=>{
+    document.querySelectorAll('#quiz-level-row .chip').forEach(c=>c.classList.remove('active'));
+    chip.classList.add('active');
+    quizCurrentLevel = Number(chip.dataset.level);
+    renderQuiz();
+  });
+});
+document.getElementById('quiz-reset').addEventListener('click', renderQuiz);
+renderQuiz();
+</script>
+</body>
+</html>
